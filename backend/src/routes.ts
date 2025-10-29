@@ -1,10 +1,13 @@
 import { Router, Request, Response } from "express";
+import { CreateUserController } from "./controllers/user/CreateUserController";
 
 const router = Router();
 
+const createUserController = new CreateUserController()
 
-router.get("/ping", (req: Request, res: Response) => {
-    return res.json({ message: "teste" });
-});
+
+
+// Rota para criar usuário
+router.post('/users', (req, res) => createUserController.handle(req, res))
 
 export { router };
