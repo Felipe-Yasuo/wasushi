@@ -1,0 +1,85 @@
+// 📦 Prisma ORM — Schema Principal
+
+// Gerador do Prisma Client
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Configuração do banco de dados (Data Source)
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+// 👤 Usuário
+model User {
+  id         String   @id @default(uuid())
+  name       String
+  email      String   @unique
+  password   String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt // 🆕 atualiza automaticamente na edição
+
+  @@map("users")
+}
+
+// 🏷️ Categoria
+model Category {
+  id         String    @id @default(uuid())
+  name       String
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  products   Product[]
+
+  @@map("categories")
+}
+
+// 🛒 Produto
+model Product {
+  id          String   @id @default(uuid())
+  name        String
+  price       Decimal  @db.Decimal(10, 2) // 💰 tipo numérico com 2 casas decimais
+  description String
+  banner      String
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  category_id String
+  category    Category @relation(fields: [category_id], references: [id])
+
+  items Item[]
+
+  @@map("products")
+}
+
+// 📦 Pedido
+model Order {
+  id         String   @id @default(uuid())
+  table      Int
+  status     Boolean  @default(false)
+  draft      Boolean  @default(true)
+  name       String?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  items Item[]
+
+  @@map("orders")
+}
+
+// 🧾 Item do pedido
+model Item {
+  id         String   @id @default(uuid())
+  amount     Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  order_id   String
+  product_id String
+
+  order   Order   @relation(fields: [order_id], references: [id])
+  product Product @relation(fields: [product_id], references: [id])
+
+  @@map("items")
+}
