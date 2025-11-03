@@ -10,16 +10,15 @@ interface ProductRequest {
 
 class CreateProductService {
     async execute({ name, price, description, banner, category_id }: ProductRequest) {
-        // 1️⃣ Validação básica
         if (!name || !price || !description || !category_id) {
-            throw new Error("Preencha todos os campos obrigatórios.");
+            throw new Error("Campos obrigatórios não preenchidos.");
         }
 
-        const categoryExists = await prisma.category.findUnique({
+        const category = await prisma.category.findUnique({
             where: { id: category_id },
         });
 
-        if (!categoryExists) {
+        if (!category) {
             throw new Error("Categoria não encontrada.");
         }
 
@@ -38,7 +37,6 @@ class CreateProductService {
                 description: true,
                 banner: true,
                 category_id: true,
-                created_at: true,
             },
         });
 
@@ -47,3 +45,4 @@ class CreateProductService {
 }
 
 export { CreateProductService };
+

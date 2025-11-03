@@ -5,7 +5,11 @@ class CreateProductController {
     async handle(req: Request, res: Response) {
         const { name, price, description, category_id } = req.body;
 
-        const banner = req.body.banner || "";
+        if (!req.file) {
+            throw new Error("Erro ao enviar o arquivo.");
+        }
+
+        const { filename: banner } = req.file;
 
         const createProductService = new CreateProductService();
 
