@@ -5,6 +5,7 @@ import { DetailUserController } from "./controllers/user/DetailUserController";
 import { isAuthenticated } from "./middleware/isAuthenticated";
 import { CreateCategoryController } from "./controllers/category/CreateCategoryController";
 import { ListCategoryController } from "./controllers/category/ListCategoryController";
+import { CreateProductController } from "./controllers/product/CreateProductController";
 
 const router = Router();
 
@@ -26,5 +27,8 @@ router.get("/me", isAuthenticated, new DetailUserController().handle);
 router.post("/category", isAuthenticated, new CreateCategoryController().handle);
 router.get("/categories", isAuthenticated, new ListCategoryController().handle);
 
+
+// product
+router.post("/product", isAuthenticated, new CreateProductController().handle);
 
 export { router };
