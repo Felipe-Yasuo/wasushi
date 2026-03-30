@@ -13,6 +13,8 @@ import { ListProductByCategoryController } from "./controllers/category/ListProd
 import { CreateProductController } from "./controllers/product/CreateProductController";
 import { ListProductController } from "./controllers/product/ListProductController";
 import { DeleteProductController } from "./controllers/product/DeleteProductController";
+import { UpdateProductController } from "./controllers/product/UpdateProductController";
+import { TopProductsController } from "./controllers/product/TopProductsController";
 
 import { CreateOrderController } from "./controllers/order/CreateOrderController";
 import { AddItemController } from "./controllers/order/AddItemController";
@@ -82,12 +84,29 @@ router.get(
     new ListProductController().handle
 );
 
+
+router.put(
+    "/product",
+    isAuthenticated,
+    isAdmin,
+    upload.single("file"),
+    new UpdateProductController().handle
+);
+
+router.get(
+    "/products/top",
+    isAuthenticated,
+    new TopProductsController().handle
+);
+
 router.delete(
     "/product",
     isAuthenticated,
     isAdmin,
     new DeleteProductController().handle
 );
+
+
 
 // Rotas Order
 router.post(
