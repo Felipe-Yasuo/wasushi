@@ -1,0 +1,16 @@
+import { Request, Response } from "express";
+import { SendOrderService } from "../../services/order/SendOrderService";
+
+class SendOrderController {
+    async handle(request: Request, response: Response) {
+        const { order_id, name } = request.body;
+
+        const sendOrderService = new SendOrderService();
+
+        const order = await sendOrderService.execute({ order_id, name });
+
+        return response.json(order);
+    }
+}
+
+export { SendOrderController };
