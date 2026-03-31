@@ -57,3 +57,9 @@ export interface Order {
     createdAt: string;
     items?: OrderItem[];
 }
+
+export interface TopProduct {
+    id: string;
+    name: string;
+    totalSold: number;
+}

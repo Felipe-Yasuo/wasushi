@@ -4,6 +4,7 @@ import Link from "next/link";
 export default function AccessDeniedPage() {
     return (
         <div className="flex min-h-screen flex-col items-center justify-center bg-surface-lowest px-4">
+            <div className="pointer-events-none absolute -top-32 -right-32 h-[500px] w-[500px] rounded-full bg-brand-container/15 blur-[120px]" />
             <p className="mb-6 text-sm tracking-[0.2em] text-on-surface-variant">
                 WASUSHI
             </p>

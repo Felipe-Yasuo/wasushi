@@ -39,6 +39,43 @@ export async function createProductAction(formData: FormData) {
     }
 }
 
+export async function updateProductAction(productId: string, formData: FormData) {
+    try {
+        const token = await getToken();
+
+        if (!token) {
+            return { success: false, error: "Não autorizado" };
+        }
+
+        const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/product?product_id=${productId}`,
+            {
+                method: "PUT",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                body: formData,
+            }
+        );
+
+        if (!response.ok) {
+            const error = await response.json();
+            return { success: false, error: error.error || "Erro ao atualizar produto" };
+        }
+
+        await response.json();
+
+        revalidatePath("/dashboard/products");
+        return { success: true, error: "" };
+    } catch (error) {
+        if (error instanceof Error) {
+            return { success: false, error: error.message };
+        }
+
+        return { success: false, error: "Erro ao atualizar produto" };
+    }
+}
+
 export async function deleteProductAction(productId: string) {
     try {
         if (!productId) {
