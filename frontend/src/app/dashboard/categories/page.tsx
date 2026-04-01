@@ -1,4 +1,6 @@
 import { CategoryForm } from "@/components/dashboard/category-form";
+import { EditCategoryForm } from "@/components/dashboard/edit-category-form";
+import { DeleteCategoryButton } from "@/components/dashboard/delete-category-button";
 import { apiClient } from "@/lib/api";
 import { getToken } from "@/lib/auth";
 import { Category } from "@/lib/types";
@@ -21,7 +23,7 @@ export default async function CategoriesPage() {
             </div>
 
             {/* Stats */}
-            <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mb-8 grid gap-4 sm:grid-cols-2">
                 <div className="rounded-xl bg-surface-container p-6">
                     <p className="mb-1 text-xs font-semibold tracking-[0.15em] text-on-surface-variant">
                         TOTAL DE CATEGORIAS
@@ -32,26 +34,17 @@ export default async function CategoriesPage() {
                 </div>
                 <div className="rounded-xl bg-surface-container p-6">
                     <p className="mb-1 text-xs font-semibold tracking-[0.15em] text-on-surface-variant">
-                        MAIS RECENTE
+                        CATEGORIAS ATIVAS
                     </p>
-                    <p className="text-5xl font-bold text-on-surface">
-                        {categories.length > 0 ? categories[categories.length - 1]?.name : "—"}
-                    </p>
-                </div>
-                <div className="hidden rounded-xl bg-surface-container p-6 lg:block">
-                    <p className="mb-1 text-xs font-semibold tracking-[0.15em] text-on-surface-variant">
-                        STATUS
-                    </p>
-                    <p className="mt-2 flex items-center gap-2 text-lg font-semibold text-tertiary">
-                        <span className="inline-block h-2 w-2 rounded-full bg-tertiary" />
-                        Todas ativas
+                    <p className="text-5xl font-bold text-tertiary">
+                        {String(categories.filter((c) => !c.disabled).length).padStart(2, "0")}
                     </p>
                 </div>
             </div>
 
             {/* Table */}
             <div className="rounded-xl bg-surface-container">
-                <div className="flex items-center justify-between p-5">
+                <div className="p-5">
                     <h2 className="text-lg font-semibold text-on-surface">
                         Lista de Categorias
                     </h2>
@@ -70,6 +63,9 @@ export default async function CategoriesPage() {
                                 <th className="px-5 py-3 text-left text-xs font-semibold tracking-[0.15em] text-on-surface-variant">
                                     STATUS
                                 </th>
+                                <th className="px-5 py-3 text-right text-xs font-semibold tracking-[0.15em] text-on-surface-variant">
+                                    AÇÕES
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -85,10 +81,23 @@ export default async function CategoriesPage() {
                                         {formatDate(category.createdAt)}
                                     </td>
                                     <td className="px-5 py-4">
-                                        <span className="inline-flex items-center gap-1.5 rounded-full bg-tertiary/10 px-3 py-1 text-xs font-semibold text-tertiary">
-                                            <span className="inline-block h-1.5 w-1.5 rounded-full bg-tertiary" />
-                                            ATIVO
-                                        </span>
+                                        {category.disabled ? (
+                                            <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-container/10 px-3 py-1 text-xs font-semibold text-brand-primary">
+                                                <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand-container" />
+                                                DESATIVADO
+                                            </span>
+                                        ) : (
+                                            <span className="inline-flex items-center gap-1.5 rounded-full bg-tertiary/10 px-3 py-1 text-xs font-semibold text-tertiary">
+                                                <span className="inline-block h-1.5 w-1.5 rounded-full bg-tertiary" />
+                                                ATIVO
+                                            </span>
+                                        )}
+                                    </td>
+                                    <td className="px-5 py-4">
+                                        <div className="flex items-center justify-end gap-1">
+                                            <EditCategoryForm category={category} />
+                                            <DeleteCategoryButton categoryId={category.id} />
+                                        </div>
                                     </td>
                                 </tr>
                             ))}

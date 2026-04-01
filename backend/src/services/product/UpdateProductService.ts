@@ -7,11 +7,12 @@ interface UpdateProductProps {
     price?: string;
     description?: string;
     category_id?: string;
+    disabled?: string;
     file?: Express.Multer.File;
 }
 
 class UpdateProductService {
-    async execute({ product_id, name, price, description, category_id, file }: UpdateProductProps) {
+    async execute({ product_id, name, price, description, category_id, disabled, file }: UpdateProductProps) {
 
         const product = await prismaClient.product.findFirst({
             where: { id: product_id },
@@ -50,6 +51,7 @@ class UpdateProductService {
                 description: description || product.description,
                 category_id: category_id || product.category_id,
                 banner: banner,
+                ...(disabled !== undefined && { disabled: disabled === "true" }),
             },
             include: {
                 category: {

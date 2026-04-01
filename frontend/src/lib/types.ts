@@ -17,6 +17,7 @@ export interface AuthResponse {
 export interface Category {
     id: string;
     name: string;
+    disabled: boolean;
     createdAt: string;
 }
 

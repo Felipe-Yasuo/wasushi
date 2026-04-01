@@ -4,6 +4,7 @@ import { updateProductAction } from "@/actions/products";
 import {
     Dialog,
     DialogContent,
+    DialogDescription,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
@@ -23,12 +24,20 @@ export function EditProductForm({ product, categories }: EditProductFormProps) {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const [fileName, setFileName] = useState("");
+    const [disabled, setDisabled] = useState(product.disabled);
     const formRef = useRef<HTMLFormElement>(null);
 
     async function handleSubmit(formData: FormData) {
         try {
             setLoading(true);
             setError("");
+
+            formData.set("disabled", String(disabled));
+
+            const file = formData.get("file") as File;
+            if (!file || file.size === 0) {
+                formData.delete("file");
+            }
 
             const result = await updateProductAction(product.id, formData);
 
@@ -46,7 +55,14 @@ export function EditProductForm({ product, categories }: EditProductFormProps) {
     }
 
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
+        <Dialog open={open} onOpenChange={(isOpen) => {
+            setOpen(isOpen);
+            if (isOpen) {
+                setDisabled(product.disabled);
+                setError("");
+                setFileName("");
+            }
+        }}>
             <DialogTrigger asChild>
                 <button className="rounded-lg p-2 text-on-surface-variant transition-colors hover:bg-surface-high hover:text-on-surface">
                     <Pencil className="h-4 w-4" />
@@ -57,6 +73,9 @@ export function EditProductForm({ product, categories }: EditProductFormProps) {
                     <DialogTitle className="text-on-surface">
                         Editar produto
                     </DialogTitle>
+                    <DialogDescription className="text-sm text-on-surface-variant">
+                        Altere as informações do produto.
+                    </DialogDescription>
                 </DialogHeader>
 
                 <form ref={formRef} action={handleSubmit} className="space-y-5 pt-2">
@@ -143,6 +162,34 @@ export function EditProductForm({ product, categories }: EditProductFormProps) {
                                 }
                             />
                         </label>
+                    </div>
+
+                    <div>
+                        <label className="mb-2 block text-xs font-semibold tracking-[0.15em] text-on-surface-variant">
+                            STATUS
+                        </label>
+                        <div className="flex gap-3">
+                            <button
+                                type="button"
+                                onClick={() => setDisabled(false)}
+                                className={`flex-1 rounded-lg py-3 text-sm font-semibold tracking-wider transition-all ${!disabled
+                                        ? "bg-tertiary/20 text-tertiary ring-2 ring-tertiary/50"
+                                        : "bg-surface-highest/60 text-on-surface-variant hover:bg-surface-highest"
+                                    }`}
+                            >
+                                ATIVO
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => setDisabled(true)}
+                                className={`flex-1 rounded-lg py-3 text-sm font-semibold tracking-wider transition-all ${disabled
+                                        ? "bg-brand-container/20 text-brand-primary ring-2 ring-brand-container/50"
+                                        : "bg-surface-highest/60 text-on-surface-variant hover:bg-surface-highest"
+                                    }`}
+                            >
+                                DESATIVADO
+                            </button>
+                        </div>
                     </div>
 
                     {error && <p className="text-sm text-brand-container">{error}</p>}

@@ -1,7 +1,7 @@
 import prismaClient from "../../prisma/index";
 
 interface ListProductProps {
-    disabled: boolean;
+    disabled?: boolean;
 }
 
 class ListProductService {
@@ -9,7 +9,7 @@ class ListProductService {
 
         const products = await prismaClient.product.findMany({
             where: {
-                disabled: disabled,
+                ...(disabled !== undefined && { disabled }),
             },
             include: {
                 category: {

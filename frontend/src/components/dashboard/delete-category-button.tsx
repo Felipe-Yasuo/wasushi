@@ -1,22 +1,22 @@
 "use client";
 
-import { deleteProductAction } from "@/actions/products";
+import { deleteCategoryAction } from "@/actions/categories";
 import { ConfirmModal } from "./confirm-modal";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
 
-interface DeleteButtonProps {
-    productId: string;
+interface DeleteCategoryButtonProps {
+    categoryId: string;
 }
 
-export function DeleteButton({ productId }: DeleteButtonProps) {
+export function DeleteCategoryButton({ categoryId }: DeleteCategoryButtonProps) {
     const [showConfirm, setShowConfirm] = useState(false);
     const [loading, setLoading] = useState(false);
 
     async function handleDelete() {
         try {
             setLoading(true);
-            await deleteProductAction(productId);
+            await deleteCategoryAction(categoryId);
             setShowConfirm(false);
         } catch (error) {
             console.error("Erro ao deletar:", error);
@@ -36,8 +36,8 @@ export function DeleteButton({ productId }: DeleteButtonProps) {
 
             {showConfirm && (
                 <ConfirmModal
-                    title="Deletar produto"
-                    message="Tem certeza que deseja deletar este produto? Esta ação não pode ser desfeita."
+                    title="Deletar categoria"
+                    message="Tem certeza que deseja deletar esta categoria? Todos os produtos vinculados a ela também serão removidos."
                     confirmLabel="Deletar"
                     onConfirm={handleDelete}
                     onCancel={() => setShowConfirm(false)}

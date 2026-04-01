@@ -4,7 +4,7 @@ import { UpdateProductService } from "../../services/product/UpdateProductServic
 class UpdateProductController {
     async handle(request: Request, response: Response) {
         const product_id = request.query.product_id as string;
-        const { name, price, description, category_id } = request.body;
+        const { name, price, description, category_id, disabled } = request.body;
         const file = request.file;
 
         if (!product_id) {
@@ -21,6 +21,7 @@ class UpdateProductController {
             price,
             description,
             category_id,
+            disabled,
             file,
         });
 

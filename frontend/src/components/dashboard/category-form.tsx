@@ -4,6 +4,7 @@ import { createCategoryAction } from "@/actions/categories";
 import {
     Dialog,
     DialogContent,
+    DialogDescription,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
@@ -40,7 +41,7 @@ export function CategoryForm() {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <button className="flex items-center gap-2 rounded-full bg-brand-container px-5 py-2.5 text-sm font-semibold text-brand-on-container transition-opacity hover:opacity-90">
+                <button className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-brand-container to-brand-primary px-5 py-2.5 text-sm font-semibold tracking-wider text-brand-on-container transition-opacity hover:opacity-90">
                     <Plus className="h-4 w-4" />
                     Novo
                 </button>
@@ -50,6 +51,9 @@ export function CategoryForm() {
                     <DialogTitle className="text-on-surface">
                         Nova categoria
                     </DialogTitle>
+                    <DialogDescription className="text-sm text-on-surface-variant">
+                        Crie uma nova categoria para o cardápio.
+                    </DialogDescription>
                 </DialogHeader>
 
                 <form ref={formRef} action={handleSubmit} className="space-y-5 pt-2">

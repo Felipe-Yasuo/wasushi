@@ -4,6 +4,7 @@ import { createProductAction } from "@/actions/products";
 import {
     Dialog,
     DialogContent,
+    DialogDescription,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
@@ -58,6 +59,9 @@ export function ProductForm({ categories }: ProductFormProps) {
                     <DialogTitle className="text-on-surface">
                         Novo produto
                     </DialogTitle>
+                    <DialogDescription className="text-sm text-on-surface-variant">
+                        Adicione um novo prato ao cardápio.
+                    </DialogDescription>
                 </DialogHeader>
 
                 <form ref={formRef} action={handleSubmit} className="space-y-5 pt-2">

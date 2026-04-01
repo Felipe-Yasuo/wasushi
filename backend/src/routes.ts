@@ -9,6 +9,8 @@ import { DetailUserController } from "./controllers/user/DetailUserController";
 import { CreateCategoryController } from "./controllers/category/CreateCategoryController";
 import { ListCategoryController } from "./controllers/category/ListCategoryController";
 import { ListProductByCategoryController } from "./controllers/category/ListProductByCategoryController";
+import { UpdateCategoryController } from "./controllers/category/UpdateCategoryController";
+import { DeleteCategoryController } from "./controllers/category/DeleteCategoryController";
 
 import { CreateProductController } from "./controllers/product/CreateProductController";
 import { ListProductController } from "./controllers/product/ListProductController";
@@ -65,6 +67,20 @@ router.get(
     isAuthenticated,
     validateSchema(listProductByCategorySchema),
     new ListProductByCategoryController().handle
+);
+
+router.put(
+    "/category",
+    isAuthenticated,
+    isAdmin,
+    new UpdateCategoryController().handle
+);
+
+router.delete(
+    "/category",
+    isAuthenticated,
+    isAdmin,
+    new DeleteCategoryController().handle
 );
 
 // Rotas Product

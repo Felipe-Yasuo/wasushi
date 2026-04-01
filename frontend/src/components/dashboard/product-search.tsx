@@ -54,6 +54,9 @@ export function ProductSearch({ products, categories }: ProductSearchProps) {
                             <th className="px-5 py-3 text-left text-xs font-semibold tracking-[0.15em] text-on-surface-variant">
                                 PREÇO
                             </th>
+                            <th className="px-5 py-3 text-left text-xs font-semibold tracking-[0.15em] text-on-surface-variant">
+                                STATUS
+                            </th>
                             <th className="px-5 py-3 text-right text-xs font-semibold tracking-[0.15em] text-on-surface-variant">
                                 AÇÃO
                             </th>
@@ -87,6 +90,19 @@ export function ProductSearch({ products, categories }: ProductSearchProps) {
                                 </td>
                                 <td className="px-5 py-4 text-sm font-medium text-on-surface">
                                     {formatPrice(product.price)}
+                                </td>
+                                <td className="px-5 py-4">
+                                    {product.disabled ? (
+                                        <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-container/10 px-3 py-1 text-xs font-semibold text-brand-primary">
+                                            <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand-container" />
+                                            DESATIVADO
+                                        </span>
+                                    ) : (
+                                        <span className="inline-flex items-center gap-1.5 rounded-full bg-tertiary/10 px-3 py-1 text-xs font-semibold text-tertiary">
+                                            <span className="inline-block h-1.5 w-1.5 rounded-full bg-tertiary" />
+                                            ATIVO
+                                        </span>
+                                    )}
                                 </td>
                                 <td className="px-5 py-4">
                                     <div className="flex items-center justify-end gap-1">

@@ -19,7 +19,7 @@ export default async function ProductsPage() {
             {/* Header */}
             <div className="mb-8 flex items-center justify-between">
                 <h1 className="text-2xl font-bold text-brand-primary">Produtos</h1>
-                <ProductForm categories={categories} />
+                <ProductForm categories={categories.filter((c) => !c.disabled)} />
             </div>
 
             {/* Stats */}

@@ -31,3 +31,54 @@ export async function createCategoryAction(formData: FormData) {
         return { success: false, error: "Erro ao criar categoria" };
     }
 }
+
+export async function updateCategoryAction(categoryId: string, name: string, disabled: boolean) {
+    try {
+        const token = await getToken();
+
+        if (!token) {
+            return { success: false, error: "Não autorizado" };
+        }
+
+        await apiClient(`/category?category_id=${categoryId}`, {
+            method: "PUT",
+            body: JSON.stringify({ name, disabled }),
+            token: token,
+        });
+
+        revalidatePath("/dashboard/categories");
+
+        return { success: true, error: "" };
+    } catch (error) {
+        if (error instanceof Error) {
+            return { success: false, error: error.message };
+        }
+
+        return { success: false, error: "Erro ao atualizar categoria" };
+    }
+}
+
+export async function deleteCategoryAction(categoryId: string) {
+    try {
+        const token = await getToken();
+
+        if (!token) {
+            return { success: false, error: "Não autorizado" };
+        }
+
+        await apiClient(`/category?category_id=${categoryId}`, {
+            method: "DELETE",
+            token: token,
+        });
+
+        revalidatePath("/dashboard/categories");
+
+        return { success: true, error: "" };
+    } catch (error) {
+        if (error instanceof Error) {
+            return { success: false, error: error.message };
+        }
+
+        return { success: false, error: "Erro ao deletar categoria" };
+    }
+}
