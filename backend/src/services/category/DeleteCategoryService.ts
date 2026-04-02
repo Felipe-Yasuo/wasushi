@@ -1,4 +1,5 @@
 import prismaClient from "../../prisma/index";
+import { AppError } from "../../errors/AppError";
 
 interface DeleteCategoryProps {
     category_id: string;
@@ -12,7 +13,7 @@ class DeleteCategoryService {
         });
 
         if (!category) {
-            throw new Error("Categoria não encontrada");
+            throw new AppError("Categoria não encontrada", 404);
         }
 
         const deletedCategory = await prismaClient.category.delete({

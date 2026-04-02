@@ -1,5 +1,6 @@
 import prismaClient from "../../prisma/index";
 import cloudinary from "../../config/cloudinary";
+import { AppError } from "../../errors/AppError";
 
 interface UpdateProductProps {
     product_id: string;
@@ -19,7 +20,7 @@ class UpdateProductService {
         });
 
         if (!product) {
-            throw new Error("Produto não encontrado");
+            throw new AppError("Produto não encontrado", 404);
         }
 
         let banner = product.banner;

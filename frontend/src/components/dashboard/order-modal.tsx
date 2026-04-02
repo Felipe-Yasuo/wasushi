@@ -14,6 +14,7 @@ interface OrderModalProps {
 
 export function OrderModal({ order, onClose, onFinish }: OrderModalProps) {
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
     const total = order.items?.reduce(
         (sum, item) => sum + item.product.price * item.amount,
@@ -23,14 +24,17 @@ export function OrderModal({ order, onClose, onFinish }: OrderModalProps) {
     async function handleFinish() {
         try {
             setLoading(true);
+            setError("");
             const result = await finishOrderAction(order.id);
 
             if (result.success) {
                 onClose();
                 onFinish();
+            } else {
+                setError(result.error);
             }
-        } catch (error) {
-            console.error("Erro ao finalizar:", error);
+        } catch (err) {
+            setError("Erro ao finalizar pedido.");
         } finally {
             setLoading(false);
         }
@@ -88,6 +92,12 @@ export function OrderModal({ order, onClose, onFinish }: OrderModalProps) {
                         {formatPrice(total)}
                     </p>
                 </div>
+
+                {error && (
+                    <div className="mb-3 rounded-lg bg-red-500/10 px-4 py-3 text-sm text-red-400">
+                        {error}
+                    </div>
+                )}
 
                 <div className="flex gap-3">
                     <button

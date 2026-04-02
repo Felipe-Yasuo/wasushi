@@ -7,12 +7,6 @@ class UpdateProductController {
         const { name, price, description, category_id, disabled } = request.body;
         const file = request.file;
 
-        if (!product_id) {
-            return response.status(400).json({
-                error: "product_id é obrigatório",
-            });
-        }
-
         const updateProductService = new UpdateProductService();
 
         const product = await updateProductService.execute({

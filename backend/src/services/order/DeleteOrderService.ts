@@ -1,4 +1,5 @@
 import prismaClient from "../../prisma/index";
+import { AppError } from "../../errors/AppError";
 
 interface DeleteOrderProps {
     order_id: string;
@@ -14,7 +15,7 @@ class DeleteOrderService {
         });
 
         if (!order) {
-            throw new Error("Pedido não encontrado");
+            throw new AppError("Pedido não encontrado", 404);
         }
 
         const deletedOrder = await prismaClient.order.delete({

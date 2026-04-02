@@ -37,9 +37,8 @@ export default function Finish() {
 
             router.dismissAll();
             router.replace("/(authenticated)/dashboard");
-        } catch (err) {
-            console.log(err);
-            Alert.alert("Erro", "Falha ao enviar pedido.");
+        } catch (err: any) {
+            Alert.alert("Erro", err?.response?.data?.error || "Falha ao enviar pedido.");
         } finally {
             setLoading(false);
         }

@@ -58,8 +58,8 @@ export default function Order() {
         try {
             const response = await api.get<Category[]>("/category");
             setCategories(response.data);
-        } catch (err) {
-            console.log(err);
+        } catch (err: any) {
+            Alert.alert("Erro", err?.response?.data?.error || "Falha ao carregar categorias.");
         } finally {
             setLoadingCategories(false);
         }
@@ -72,8 +72,8 @@ export default function Order() {
                 params: { category_id: categoryId },
             });
             setProducts(response.data);
-        } catch (err) {
-            console.log(err);
+        } catch (err: any) {
+            Alert.alert("Erro", err?.response?.data?.error || "Falha ao carregar produtos.");
         } finally {
             setLoadingProducts(false);
         }
@@ -93,8 +93,8 @@ export default function Order() {
             setSelectedCategory("");
             setSelectedProduct("");
             setQuantity(1);
-        } catch (err) {
-            console.log(err);
+        } catch (err: any) {
+            Alert.alert("Erro", err?.response?.data?.error || "Falha ao adicionar item.");
         } finally {
             setLoadingAddItem(false);
         }
@@ -110,9 +110,8 @@ export default function Order() {
             setItems(updatedItems);
 
             Alert.alert("Removido", "Item removido do pedido!");
-        } catch (err) {
-            console.log(err);
-            Alert.alert("Erro", "Erro ao remover item.");
+        } catch (err: any) {
+            Alert.alert("Erro", err?.response?.data?.error || "Erro ao remover item.");
         }
     }
 
@@ -140,9 +139,8 @@ export default function Order() {
                                 params: { order_id: order_id },
                             });
                             router.back();
-                        } catch (err) {
-                            console.log(err);
-                            Alert.alert("Erro", "Erro ao cancelar pedido.");
+                        } catch (err: any) {
+                            Alert.alert("Erro", err?.response?.data?.error || "Erro ao cancelar pedido.");
                         }
                     },
                 },

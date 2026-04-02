@@ -56,9 +56,8 @@ export default function Dashboard() {
             });
 
             setTableNumber("");
-        } catch (err) {
-            console.log(err);
-            Alert.alert("Erro", "Falha ao abrir mesa, tente mais tarde.");
+        } catch (err: any) {
+            Alert.alert("Erro", err?.response?.data?.error || "Falha ao abrir mesa, tente mais tarde.");
         } finally {
             setLoading(false);
         }

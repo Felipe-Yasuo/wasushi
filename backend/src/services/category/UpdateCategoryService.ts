@@ -1,4 +1,5 @@
 import prismaClient from "../../prisma/index";
+import { AppError } from "../../errors/AppError";
 
 interface UpdateCategoryProps {
     category_id: string;
@@ -14,7 +15,7 @@ class UpdateCategoryService {
         });
 
         if (!category) {
-            throw new Error("Categoria não encontrada");
+            throw new AppError("Categoria não encontrada", 404);
         }
 
         const updatedCategory = await prismaClient.category.update({

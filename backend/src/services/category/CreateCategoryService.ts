@@ -1,4 +1,5 @@
 import prismaClient from "../../prisma/index";
+import { AppError } from "../../errors/AppError";
 
 interface CreateCategoryProps {
     name: string;
@@ -14,7 +15,7 @@ class CreateCategoryService {
         });
 
         if (categoryAlreadyExists) {
-            throw new Error("Categoria já existe");
+            throw new AppError("Categoria já existe", 409);
         }
 
         const category = await prismaClient.category.create({

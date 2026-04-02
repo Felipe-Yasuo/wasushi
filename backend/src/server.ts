@@ -1,6 +1,7 @@
 import cors from 'cors';
 import 'dotenv/config';
 import express, { NextFunction, Request, Response } from 'express';
+import { AppError } from './errors/AppError';
 import { router } from './routes';
 
 const app = express();
@@ -14,11 +15,13 @@ app.use(cors({
 app.use(router);
 
 app.use((error: Error, _: Request, response: Response, next: NextFunction) => {
-    if (error instanceof Error) {
-        return response.status(400).json({
+    if (error instanceof AppError) {
+        return response.status(error.statusCode).json({
             error: error.message,
         });
     }
+
+    console.error("[ERRO INTERNO]", error);
 
     return response.status(500).json({
         error: "Erro interno do servidor",

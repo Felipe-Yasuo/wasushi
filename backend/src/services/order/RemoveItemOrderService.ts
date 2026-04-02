@@ -1,4 +1,5 @@
 import prismaClient from "../../prisma/index";
+import { AppError } from "../../errors/AppError";
 
 interface RemoveItemProps {
     item_id: string;
@@ -14,7 +15,7 @@ class RemoveItemOrderService {
         });
 
         if (!itemExists) {
-            throw new Error("Item não encontrado");
+            throw new AppError("Item não encontrado", 404);
         }
 
         const removedItem = await prismaClient.item.delete({

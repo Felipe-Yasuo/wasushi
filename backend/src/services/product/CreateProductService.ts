@@ -1,5 +1,6 @@
 import prismaClient from "../../prisma/index";
 import cloudinary from "../../config/cloudinary";
+import { AppError } from "../../errors/AppError";
 
 interface CreateProductProps {
     name: string;
@@ -19,7 +20,7 @@ class CreateProductService {
         });
 
         if (!categoryExists) {
-            throw new Error("Categoria não encontrada");
+            throw new AppError("Categoria não encontrada", 404);
         }
 
         const uploadResult = await new Promise<string>((resolve, reject) => {

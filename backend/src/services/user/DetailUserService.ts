@@ -1,4 +1,5 @@
 import prismaClient from "../../prisma/index";
+import { AppError } from "../../errors/AppError";
 
 interface DetailUserProps {
     user_id: string;
@@ -21,7 +22,7 @@ class DetailUserService {
         });
 
         if (!user) {
-            throw new Error("Usuário não encontrado");
+            throw new AppError("Usuário não encontrado", 404);
         }
 
         return user;

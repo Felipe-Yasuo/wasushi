@@ -38,8 +38,15 @@ export async function apiClient<T>(
 
     if (!response.ok) {
         const error = await response.json().catch(() => ({
-            error: "Erro HTTP: " + response.status,
+            error: "Erro na requisição",
         }));
+
+        if (response.status === 401) {
+            const authError = new Error(error.error || "Sessão expirada");
+            (authError as any).status = 401;
+            throw authError;
+        }
+
         throw new Error(error.error || "Erro na requisição");
     }
 

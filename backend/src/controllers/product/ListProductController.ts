@@ -3,8 +3,9 @@ import { ListProductService } from "../../services/product/ListProductService";
 
 class ListProductController {
     async handle(request: Request, response: Response) {
-        const disabledParam = request.query.disabled as string | undefined;
-        const disabled = disabledParam !== undefined ? disabledParam === "true" : undefined;
+        const disabled = request.query.disabled !== undefined
+            ? request.query.disabled === "true"
+            : undefined;
 
         const listProductService = new ListProductService();
 

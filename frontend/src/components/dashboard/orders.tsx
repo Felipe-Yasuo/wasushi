@@ -11,16 +11,20 @@ export function Orders() {
     const [orders, setOrders] = useState<Order[]>([]);
     const [loading, setLoading] = useState(true);
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+    const [error, setError] = useState("");
 
     const loadOrders = useCallback(async () => {
         try {
             setLoading(true);
+            setError("");
             const result = await listOrdersAction();
             if (result.success) {
                 setOrders(result.data);
+            } else {
+                setError(result.error);
             }
-        } catch (error) {
-            console.error("Erro ao carregar pedidos:", error);
+        } catch (err) {
+            setError("Erro ao carregar pedidos.");
         } finally {
             setLoading(false);
         }
@@ -32,12 +36,15 @@ export function Orders() {
 
     async function handleOpenDetail(orderId: string) {
         try {
+            setError("");
             const result = await detailOrderAction(orderId);
             if (result.success && result.data) {
                 setSelectedOrder(result.data);
+            } else {
+                setError(result.error);
             }
-        } catch (error) {
-            console.error("Erro ao carregar detalhes:", error);
+        } catch (err) {
+            setError("Erro ao carregar detalhes do pedido.");
         }
     }
 
@@ -68,6 +75,13 @@ export function Orders() {
                     </p>
                 </div>
             </div>
+
+            {/* Error */}
+            {error && (
+                <div className="mb-4 rounded-lg bg-red-500/10 px-4 py-3 text-sm text-red-400">
+                    {error}
+                </div>
+            )}
 
             {/* Orders Grid */}
             {loading && orders.length === 0 ? (

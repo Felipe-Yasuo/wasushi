@@ -12,14 +12,20 @@ interface DeleteCategoryButtonProps {
 export function DeleteCategoryButton({ categoryId }: DeleteCategoryButtonProps) {
     const [showConfirm, setShowConfirm] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
     async function handleDelete() {
         try {
             setLoading(true);
-            await deleteCategoryAction(categoryId);
-            setShowConfirm(false);
-        } catch (error) {
-            console.error("Erro ao deletar:", error);
+            setError("");
+            const result = await deleteCategoryAction(categoryId);
+            if (result.success) {
+                setShowConfirm(false);
+            } else {
+                setError(result.error);
+            }
+        } catch (err) {
+            setError("Erro ao deletar categoria.");
         } finally {
             setLoading(false);
         }
@@ -37,10 +43,10 @@ export function DeleteCategoryButton({ categoryId }: DeleteCategoryButtonProps) 
             {showConfirm && (
                 <ConfirmModal
                     title="Deletar categoria"
-                    message="Tem certeza que deseja deletar esta categoria? Todos os produtos vinculados a ela também serão removidos."
+                    message={error || "Tem certeza que deseja deletar esta categoria? Todos os produtos vinculados a ela também serão removidos."}
                     confirmLabel="Deletar"
                     onConfirm={handleDelete}
-                    onCancel={() => setShowConfirm(false)}
+                    onCancel={() => { setShowConfirm(false); setError(""); }}
                     loading={loading}
                 />
             )}

@@ -1,7 +1,7 @@
 "use server";
 
 import { apiClient } from "@/lib/api";
-import { getToken } from "@/lib/auth";
+import { getToken, removeToken } from "@/lib/auth";
 import { Category } from "@/lib/types";
 import { revalidatePath } from "next/cache";
 
@@ -25,6 +25,10 @@ export async function createCategoryAction(formData: FormData) {
         return { success: true, error: "" };
     } catch (error) {
         if (error instanceof Error) {
+            if ((error as any).status === 401) {
+                await removeToken();
+                return { success: false, error: "Sessão expirada. Faça login novamente." };
+            }
             return { success: false, error: error.message };
         }
 
@@ -51,6 +55,10 @@ export async function updateCategoryAction(categoryId: string, name: string, dis
         return { success: true, error: "" };
     } catch (error) {
         if (error instanceof Error) {
+            if ((error as any).status === 401) {
+                await removeToken();
+                return { success: false, error: "Sessão expirada. Faça login novamente." };
+            }
             return { success: false, error: error.message };
         }
 
@@ -76,6 +84,10 @@ export async function deleteCategoryAction(categoryId: string) {
         return { success: true, error: "" };
     } catch (error) {
         if (error instanceof Error) {
+            if ((error as any).status === 401) {
+                await removeToken();
+                return { success: false, error: "Sessão expirada. Faça login novamente." };
+            }
             return { success: false, error: error.message };
         }
 

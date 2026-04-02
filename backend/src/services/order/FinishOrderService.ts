@@ -1,4 +1,5 @@
 import prismaClient from "../../prisma/index";
+import { AppError } from "../../errors/AppError";
 
 interface FinishOrderProps {
     order_id: string;
@@ -14,11 +15,11 @@ class FinishOrderService {
         });
 
         if (!order) {
-            throw new Error("Pedido não encontrado");
+            throw new AppError("Pedido não encontrado", 404);
         }
 
         if (order.status) {
-            throw new Error("Pedido já foi finalizado");
+            throw new AppError("Pedido já foi finalizado", 400);
         }
 
         const updatedOrder = await prismaClient.order.update({

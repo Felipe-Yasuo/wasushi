@@ -1,4 +1,5 @@
 import prismaClient from "../../prisma/index";
+import { AppError } from "../../errors/AppError";
 
 interface AddItemProps {
     order_id: string;
@@ -16,7 +17,7 @@ class AddItemOrderService {
         });
 
         if (!orderExists) {
-            throw new Error("Pedido não encontrado");
+            throw new AppError("Pedido não encontrado", 404);
         }
 
         const productExists = await prismaClient.product.findFirst({
@@ -26,7 +27,7 @@ class AddItemOrderService {
         });
 
         if (!productExists) {
-            throw new Error("Produto não encontrado");
+            throw new AppError("Produto não encontrado", 404);
         }
 
         const item = await prismaClient.item.create({

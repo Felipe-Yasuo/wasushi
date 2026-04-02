@@ -1,4 +1,5 @@
 import prismaClient from "../../prisma/index";
+import { AppError } from "../../errors/AppError";
 
 interface DetailOrderProps {
     order_id: string;
@@ -21,7 +22,7 @@ class DetailOrderService {
         });
 
         if (!order) {
-            throw new Error("Pedido não encontrado");
+            throw new AppError("Pedido não encontrado", 404);
         }
 
         return order;

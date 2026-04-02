@@ -1,7 +1,7 @@
 "use server";
 
 import { apiClient } from "@/lib/api";
-import { getToken } from "@/lib/auth";
+import { getToken, removeToken } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 
 export async function createProductAction(formData: FormData) {
@@ -19,6 +19,11 @@ export async function createProductAction(formData: FormData) {
             },
             body: formData,
         });
+
+        if (response.status === 401) {
+            await removeToken();
+            return { success: false, error: "Sessão expirada. Faça login novamente." };
+        }
 
         if (!response.ok) {
             const error = await response.json();
@@ -57,6 +62,11 @@ export async function updateProductAction(productId: string, formData: FormData)
                 body: formData,
             }
         );
+
+        if (response.status === 401) {
+            await removeToken();
+            return { success: false, error: "Sessão expirada. Faça login novamente." };
+        }
 
         if (!response.ok) {
             const error = await response.json();
@@ -97,6 +107,10 @@ export async function deleteProductAction(productId: string) {
         return { success: true, error: "" };
     } catch (error) {
         if (error instanceof Error) {
+            if ((error as any).status === 401) {
+                await removeToken();
+                return { success: false, error: "Sessão expirada. Faça login novamente." };
+            }
             return { success: false, error: error.message };
         }
 

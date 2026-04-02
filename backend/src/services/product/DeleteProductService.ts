@@ -1,4 +1,5 @@
 import prismaClient from "../../prisma/index";
+import { AppError } from "../../errors/AppError";
 
 interface DeleteProductProps {
     product_id: string;
@@ -14,7 +15,7 @@ class DeleteProductService {
         });
 
         if (!product) {
-            throw new Error("Produto não encontrado");
+            throw new AppError("Produto não encontrado", 404);
         }
 
         const deletedProduct = await prismaClient.product.delete({

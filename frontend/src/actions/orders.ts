@@ -1,7 +1,7 @@
 "use server";
 
 import { apiClient } from "@/lib/api";
-import { getToken } from "@/lib/auth";
+import { getToken, removeToken } from "@/lib/auth";
 import { Order } from "@/lib/types";
 import { revalidatePath } from "next/cache";
 
@@ -18,6 +18,10 @@ export async function listOrdersAction() {
         return { success: true, error: "", data };
     } catch (error) {
         if (error instanceof Error) {
+            if ((error as any).status === 401) {
+                await removeToken();
+                return { success: false, error: "Sessão expirada. Faça login novamente.", data: [] as Order[] };
+            }
             return { success: false, error: error.message, data: [] as Order[] };
         }
 
@@ -38,6 +42,10 @@ export async function detailOrderAction(orderId: string) {
         return { success: true, error: "", data };
     } catch (error) {
         if (error instanceof Error) {
+            if ((error as any).status === 401) {
+                await removeToken();
+                return { success: false, error: "Sessão expirada. Faça login novamente.", data: null };
+            }
             return { success: false, error: error.message, data: null };
         }
 
@@ -68,6 +76,10 @@ export async function finishOrderAction(orderId: string) {
         return { success: true, error: "" };
     } catch (error) {
         if (error instanceof Error) {
+            if ((error as any).status === 401) {
+                await removeToken();
+                return { success: false, error: "Sessão expirada. Faça login novamente." };
+            }
             return { success: false, error: error.message };
         }
 

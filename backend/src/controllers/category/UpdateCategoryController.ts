@@ -6,12 +6,6 @@ class UpdateCategoryController {
         const category_id = request.query.category_id as string;
         const { name, disabled } = request.body;
 
-        if (!category_id) {
-            return response.status(400).json({
-                error: "category_id é obrigatório",
-            });
-        }
-
         const updateCategoryService = new UpdateCategoryService();
 
         const category = await updateCategoryService.execute({

@@ -1,4 +1,5 @@
 import prismaClient from "../../prisma/index";
+import { AppError } from "../../errors/AppError";
 
 interface SendOrderProps {
     order_id: string;
@@ -15,11 +16,11 @@ class SendOrderService {
         });
 
         if (!order) {
-            throw new Error("Pedido não encontrado");
+            throw new AppError("Pedido não encontrado", 404);
         }
 
         if (!order.draft) {
-            throw new Error("Pedido já foi enviado para a cozinha");
+            throw new AppError("Pedido já foi enviado para a cozinha", 400);
         }
 
         const updatedOrder = await prismaClient.order.update({

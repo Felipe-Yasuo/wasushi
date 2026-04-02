@@ -65,4 +65,5 @@ export interface AddItemRequest {
 
 export interface SendOrderRequest {
     order_id: string;
+    name: string;
 }

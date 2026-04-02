@@ -25,8 +25,13 @@ export const listProductSchema = z.object({
             .enum(["true", "false"], {
                 message: "O parâmetro disabled deve ser 'true' ou 'false'",
             })
-            .optional()
-            .default("false")
-            .transform((val) => val === "true"),
+            .optional(),
+    }),
+});
+
+export const updateProductSchema = z.object({
+    query: z.object({
+        product_id: z
+            .uuid({ error: "product_id deve ser um UUID válido" }),
     }),
 });

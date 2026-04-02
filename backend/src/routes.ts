@@ -28,8 +28,8 @@ import { ListOrdersController } from "./controllers/order/ListOrdersController";
 import { DeleteOrderController } from "./controllers/order/DeleteOrderController";
 
 import { createUserSchema, authUserSchema } from "./schemas/userSchema";
-import { createCategorySchema, listProductByCategorySchema } from "./schemas/categorySchema";
-import { createProductSchema, listProductSchema } from "./schemas/productSchema";
+import { createCategorySchema, updateCategorySchema, deleteCategorySchema, listProductByCategorySchema } from "./schemas/categorySchema";
+import { createProductSchema, listProductSchema, updateProductSchema } from "./schemas/productSchema";
 import {
     createOrderSchema,
     addItemSchema,
@@ -42,14 +42,15 @@ import {
 import { validateSchema } from "./middlewares/validateSchema";
 import { isAuthenticated } from "./middlewares/isAuthenticated";
 import { isAdmin } from "./middlewares/isAdmin";
+import { asyncHandler } from "./middlewares/asyncHandler";
 
 const router = Router();
 const upload = multer(uploadConfig);
 
 // Rotas User
-router.post("/users", validateSchema(createUserSchema), new CreateUserController().handle);
-router.post("/session", validateSchema(authUserSchema), new AuthUserController().handle);
-router.get("/me", isAuthenticated, new DetailUserController().handle);
+router.post("/users", validateSchema(createUserSchema), asyncHandler(new CreateUserController().handle));
+router.post("/session", validateSchema(authUserSchema), asyncHandler(new AuthUserController().handle));
+router.get("/me", isAuthenticated, asyncHandler(new DetailUserController().handle));
 
 // Rotas Category
 router.post(
@@ -57,30 +58,32 @@ router.post(
     isAuthenticated,
     isAdmin,
     validateSchema(createCategorySchema),
-    new CreateCategoryController().handle
+    asyncHandler(new CreateCategoryController().handle)
 );
 
-router.get("/category", isAuthenticated, new ListCategoryController().handle);
+router.get("/category", isAuthenticated, asyncHandler(new ListCategoryController().handle));
 
 router.get(
     "/category/product",
     isAuthenticated,
     validateSchema(listProductByCategorySchema),
-    new ListProductByCategoryController().handle
+    asyncHandler(new ListProductByCategoryController().handle)
 );
 
 router.put(
     "/category",
     isAuthenticated,
     isAdmin,
-    new UpdateCategoryController().handle
+    validateSchema(updateCategorySchema),
+    asyncHandler(new UpdateCategoryController().handle)
 );
 
 router.delete(
     "/category",
     isAuthenticated,
     isAdmin,
-    new DeleteCategoryController().handle
+    validateSchema(deleteCategorySchema),
+    asyncHandler(new DeleteCategoryController().handle)
 );
 
 // Rotas Product
@@ -90,94 +93,92 @@ router.post(
     isAdmin,
     upload.single("file"),
     validateSchema(createProductSchema),
-    new CreateProductController().handle
+    asyncHandler(new CreateProductController().handle)
 );
 
 router.get(
     "/products",
     isAuthenticated,
     validateSchema(listProductSchema),
-    new ListProductController().handle
+    asyncHandler(new ListProductController().handle)
 );
-
 
 router.put(
     "/product",
     isAuthenticated,
     isAdmin,
     upload.single("file"),
-    new UpdateProductController().handle
+    validateSchema(updateProductSchema),
+    asyncHandler(new UpdateProductController().handle)
 );
 
 router.get(
     "/products/top",
     isAuthenticated,
-    new TopProductsController().handle
+    asyncHandler(new TopProductsController().handle)
 );
 
 router.delete(
     "/product",
     isAuthenticated,
     isAdmin,
-    new DeleteProductController().handle
+    asyncHandler(new DeleteProductController().handle)
 );
-
-
 
 // Rotas Order
 router.post(
     "/order",
     isAuthenticated,
     validateSchema(createOrderSchema),
-    new CreateOrderController().handle
+    asyncHandler(new CreateOrderController().handle)
 );
 
 router.delete(
     "/order",
     isAuthenticated,
     validateSchema(deleteOrderSchema),
-    new DeleteOrderController().handle
+    asyncHandler(new DeleteOrderController().handle)
 );
 
 router.get(
     "/order/detail",
     isAuthenticated,
     validateSchema(detailOrderSchema),
-    new DetailOrderController().handle
+    asyncHandler(new DetailOrderController().handle)
 );
 
 router.get(
     "/orders",
     isAuthenticated,
-    new ListOrdersController().handle
+    asyncHandler(new ListOrdersController().handle)
 );
 
 router.post(
     "/order/add",
     isAuthenticated,
     validateSchema(addItemSchema),
-    new AddItemController().handle
+    asyncHandler(new AddItemController().handle)
 );
 
 router.delete(
     "/order/remove",
     isAuthenticated,
     validateSchema(removeItemSchema),
-    new RemoveItemController().handle
+    asyncHandler(new RemoveItemController().handle)
 );
 
 router.put(
     "/order/send",
     isAuthenticated,
     validateSchema(sendOrderSchema),
-    new SendOrderController().handle
+    asyncHandler(new SendOrderController().handle)
 );
 
 router.put(
     "/order/finish",
     isAuthenticated,
     validateSchema(finishOrderSchema),
-    new FinishOrderController().handle
+    asyncHandler(new FinishOrderController().handle)
 );
 
 export { router };

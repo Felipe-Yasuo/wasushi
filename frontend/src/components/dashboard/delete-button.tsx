@@ -12,14 +12,20 @@ interface DeleteButtonProps {
 export function DeleteButton({ productId }: DeleteButtonProps) {
     const [showConfirm, setShowConfirm] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
     async function handleDelete() {
         try {
             setLoading(true);
-            await deleteProductAction(productId);
-            setShowConfirm(false);
-        } catch (error) {
-            console.error("Erro ao deletar:", error);
+            setError("");
+            const result = await deleteProductAction(productId);
+            if (result.success) {
+                setShowConfirm(false);
+            } else {
+                setError(result.error);
+            }
+        } catch (err) {
+            setError("Erro ao deletar produto.");
         } finally {
             setLoading(false);
         }
@@ -37,10 +43,10 @@ export function DeleteButton({ productId }: DeleteButtonProps) {
             {showConfirm && (
                 <ConfirmModal
                     title="Deletar produto"
-                    message="Tem certeza que deseja deletar este produto? Esta ação não pode ser desfeita."
+                    message={error || "Tem certeza que deseja deletar este produto? Esta ação não pode ser desfeita."}
                     confirmLabel="Deletar"
                     onConfirm={handleDelete}
-                    onCancel={() => setShowConfirm(false)}
+                    onCancel={() => { setShowConfirm(false); setError(""); }}
                     loading={loading}
                 />
             )}
