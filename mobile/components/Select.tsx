@@ -1,6 +1,15 @@
 import { colors, fontSize, spacing } from "@/constants/theme";
-import { Picker } from "@react-native-picker/picker";
-import { StyleSheet, Text, View } from "react-native";
+import { ChevronDown } from "lucide-react-native";
+import { useState } from "react";
+import {
+    FlatList,
+    Modal,
+    Pressable,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from "react-native";
 
 interface SelectOption {
     label: string;
@@ -22,31 +31,91 @@ export function Select({
     selectedValue,
     onValueChange,
 }: SelectProps) {
+    const [visible, setVisible] = useState(false);
+
+    const selectedLabel =
+        options.find((opt) => opt.value === selectedValue)?.label || placeholder;
+
+    function handleSelect(value: string) {
+        onValueChange(value);
+        setVisible(false);
+    }
+
     return (
         <View style={styles.container}>
             {label && <Text style={styles.label}>{label}</Text>}
-            <View style={styles.pickerContainer}>
-                <Picker
-                    selectedValue={selectedValue}
-                    onValueChange={onValueChange}
-                    style={styles.picker}
-                    dropdownIconColor={colors.gray}
+
+            <TouchableOpacity
+                style={styles.trigger}
+                onPress={() => setVisible(true)}
+                activeOpacity={0.7}
+            >
+                <Text
+                    style={[
+                        styles.triggerText,
+                        !selectedValue && styles.triggerPlaceholder,
+                    ]}
                 >
-                    <Picker.Item
-                        label={placeholder}
-                        value=""
-                        color={colors.gray}
-                    />
-                    {options.map((option) => (
-                        <Picker.Item
-                            key={option.value}
-                            label={option.label}
-                            value={option.value}
-                            color={colors.primary}
+                    {selectedLabel}
+                </Text>
+                <ChevronDown size={18} color={colors.gray} />
+            </TouchableOpacity>
+
+            <Modal
+                visible={visible}
+                transparent
+                animationType="fade"
+                onRequestClose={() => setVisible(false)}
+            >
+                <Pressable
+                    style={styles.overlay}
+                    onPress={() => setVisible(false)}
+                >
+                    <View style={styles.modal}>
+                        <Text style={styles.modalTitle}>
+                            {label || "Selecione"}
+                        </Text>
+
+                        <FlatList
+                            data={options}
+                            keyExtractor={(item) => item.value}
+                            style={styles.list}
+                            renderItem={({ item }) => (
+                                <TouchableOpacity
+                                    style={[
+                                        styles.option,
+                                        item.value === selectedValue &&
+                                        styles.optionSelected,
+                                    ]}
+                                    onPress={() => handleSelect(item.value)}
+                                    activeOpacity={0.7}
+                                >
+                                    <Text
+                                        style={[
+                                            styles.optionText,
+                                            item.value === selectedValue &&
+                                            styles.optionTextSelected,
+                                        ]}
+                                    >
+                                        {item.label}
+                                    </Text>
+                                    {item.value === selectedValue && (
+                                        <View style={styles.dot} />
+                                    )}
+                                </TouchableOpacity>
+                            )}
                         />
-                    ))}
-                </Picker>
-            </View>
+
+                        <TouchableOpacity
+                            style={styles.cancelButton}
+                            onPress={() => setVisible(false)}
+                            activeOpacity={0.8}
+                        >
+                            <Text style={styles.cancelText}>Fechar</Text>
+                        </TouchableOpacity>
+                    </View>
+                </Pressable>
+            </Modal>
         </View>
     );
 }
@@ -62,13 +131,82 @@ const styles = StyleSheet.create({
         letterSpacing: 1.5,
         marginBottom: spacing.xs,
     },
-    pickerContainer: {
+    trigger: {
         backgroundColor: colors.backgroundInput,
         borderRadius: 10,
-        overflow: "hidden",
+        paddingHorizontal: spacing.md,
+        paddingVertical: 14,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
     },
-    picker: {
+    triggerText: {
         color: colors.primary,
-        backgroundColor: "transparent",
+        fontSize: fontSize.md,
+    },
+    triggerPlaceholder: {
+        color: colors.gray,
+    },
+    overlay: {
+        flex: 1,
+        backgroundColor: "rgba(0,0,0,0.7)",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: spacing.xl,
+    },
+    modal: {
+        backgroundColor: colors.backgroundInput,
+        borderRadius: 16,
+        width: "100%",
+        maxHeight: "70%",
+        padding: spacing.lg,
+    },
+    modalTitle: {
+        color: colors.primary,
+        fontSize: fontSize.lg,
+        fontWeight: "bold",
+        marginBottom: spacing.md,
+    },
+    list: {
+        maxHeight: 300,
+    },
+    option: {
+        paddingVertical: 14,
+        paddingHorizontal: spacing.md,
+        borderRadius: 10,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        marginBottom: 4,
+    },
+    optionSelected: {
+        backgroundColor: colors.brand + "20",
+    },
+    optionText: {
+        color: colors.primary,
+        fontSize: fontSize.md,
+    },
+    optionTextSelected: {
+        color: colors.brand,
+        fontWeight: "600",
+    },
+    dot: {
+        width: 8,
+        height: 8,
+        borderRadius: 4,
+        backgroundColor: colors.brand,
+    },
+    cancelButton: {
+        marginTop: spacing.md,
+        paddingVertical: 14,
+        alignItems: "center",
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: colors.borderColor,
+    },
+    cancelText: {
+        color: colors.gray,
+        fontSize: fontSize.md,
+        fontWeight: "600",
     },
 });
