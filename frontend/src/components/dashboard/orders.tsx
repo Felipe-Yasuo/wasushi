@@ -43,13 +43,6 @@ export function Orders({ token }: OrdersProps) {
         }
     }
 
-    function getOrderTotal(order: Order) {
-        return order.items?.reduce(
-            (sum, item) => sum + item.product.price * item.amount,
-            0
-        ) || 0;
-    }
-
     return (
         <div>
             {/* Header */}
@@ -58,7 +51,7 @@ export function Orders({ token }: OrdersProps) {
                 <button
                     onClick={loadOrders}
                     disabled={loading}
-                    className="flex items-center gap-2 rounded-full bg-brand-container px-5 py-2.5 text-sm font-semibold text-brand-on-container transition-opacity hover:opacity-90 disabled:opacity-50"
+                    className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-brand-container to-brand-primary px-5 py-2.5 text-sm font-semibold tracking-wider text-brand-on-container transition-opacity hover:opacity-90 disabled:opacity-50"
                 >
                     <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />
                     Atualizar
@@ -66,30 +59,14 @@ export function Orders({ token }: OrdersProps) {
             </div>
 
             {/* Stats */}
-            <div className="mb-8 grid gap-4 sm:grid-cols-2">
+            <div className="mb-8">
                 <div className="rounded-xl bg-surface-container p-6">
-                    <p className="mb-1 text-xs font-semibold tracking-[0.15em] text-brand-primary">
+                    <p className="mb-1 text-xs font-semibold tracking-[0.15em] text-on-surface-variant">
                         FLUXO EM TEMPO REAL
                     </p>
                     <p className="text-4xl font-bold text-on-surface">
-                        {String(orders.length).padStart(2, "0")}{" "}
-                        <span className="text-brand-primary">
-                            Pedido{orders.length !== 1 ? "s" : ""}
-                        </span>
-                    </p>
-                    <p className="mt-2 text-sm text-on-surface-variant">
-                        Pendente{orders.length !== 1 ? "s" : ""}
-                    </p>
-                </div>
-                <div className="flex flex-col items-center justify-center rounded-xl bg-surface-container p-6">
-                    <div className="mb-3 flex h-20 w-20 items-center justify-center rounded-full border-2 border-tertiary">
-                        <span className="text-xl font-bold text-tertiary">
-                            {orders.length > 0 ? `${Math.min(orders.length * 4, 100)}%` : "0%"}
-                        </span>
-                    </div>
-                    <p className="font-semibold text-on-surface">Ocupação das Mesas</p>
-                    <p className="text-xs text-on-surface-variant">
-                        {orders.length} mesa{orders.length !== 1 ? "s" : ""} ativa{orders.length !== 1 ? "s" : ""}
+                        {String(orders.length).padStart(2, "0")} Pedidos{" "}
+                        <span className="text-tertiary">Pendentes</span>
                     </p>
                 </div>
             </div>
@@ -104,7 +81,7 @@ export function Orders({ token }: OrdersProps) {
                     <p className="text-lg text-on-surface-variant">
                         Nenhum pedido pendente
                     </p>
-                    <p className="text-sm text-on-surface-variant/50">
+                    <p className="mt-1 text-sm text-on-surface-variant/50">
                         Os pedidos aparecerão aqui quando enviados pelo app
                     </p>
                 </div>
