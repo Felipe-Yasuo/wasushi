@@ -1,4 +1,4 @@
-import api from "@/services/api";
+import api, { setSignOutCallback } from "@/services/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createContext, useContext, useEffect, useState } from "react";
 import { LoginResponse, User } from "../types/index";
@@ -28,6 +28,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         }
 
         loadData();
+        setSignOutCallback(signOut);
     }, []);
 
     async function loadStorageData() {

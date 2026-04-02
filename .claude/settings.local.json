@@ -9,7 +9,9 @@
       "Bash(rm frontend/src/components/ui/card.tsx)",
       "Bash(rm frontend/src/components/ui/input.tsx)",
       "Bash(rm frontend/src/components/ui/label.tsx)",
-      "Bash(rm frontend/src/components/ui/select.tsx)"
+      "Bash(rm frontend/src/components/ui/select.tsx)",
+      "Read(//c/Users/Yasuo/Desktop/portfolio/wasushi/**)",
+      "Bash(echo \"No .env files in backend\" echo \"\" echo \"=== Check frontend .env files ===\" ls -la frontend/.env*)"
     ]
   }
 }

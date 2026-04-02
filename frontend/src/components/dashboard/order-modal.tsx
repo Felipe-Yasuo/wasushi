@@ -10,7 +10,6 @@ interface OrderModalProps {
     order: Order;
     onClose: () => void;
     onFinish: () => void;
-    token: string;
 }
 
 export function OrderModal({ order, onClose, onFinish }: OrderModalProps) {

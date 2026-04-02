@@ -1,17 +1,13 @@
 "use client";
 
-import { apiClient } from "@/lib/api";
+import { listOrdersAction, detailOrderAction } from "@/actions/orders";
 import { Order } from "@/lib/types";
 import { formatPrice, formatTime } from "@/lib/format";
 import { Clock, RefreshCw } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { OrderModal } from "./order-modal";
 
-interface OrdersProps {
-    token: string;
-}
-
-export function Orders({ token }: OrdersProps) {
+export function Orders() {
     const [orders, setOrders] = useState<Order[]>([]);
     const [loading, setLoading] = useState(true);
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
@@ -19,14 +15,16 @@ export function Orders({ token }: OrdersProps) {
     const loadOrders = useCallback(async () => {
         try {
             setLoading(true);
-            const data = await apiClient<Order[]>("/orders", { token });
-            setOrders(data);
+            const result = await listOrdersAction();
+            if (result.success) {
+                setOrders(result.data);
+            }
         } catch (error) {
             console.error("Erro ao carregar pedidos:", error);
         } finally {
             setLoading(false);
         }
-    }, [token]);
+    }, []);
 
     useEffect(() => {
         loadOrders();
@@ -34,10 +32,10 @@ export function Orders({ token }: OrdersProps) {
 
     async function handleOpenDetail(orderId: string) {
         try {
-            const order = await apiClient<Order>(`/order/detail?order_id=${orderId}`, {
-                token,
-            });
-            setSelectedOrder(order);
+            const result = await detailOrderAction(orderId);
+            if (result.success && result.data) {
+                setSelectedOrder(result.data);
+            }
         } catch (error) {
             console.error("Erro ao carregar detalhes:", error);
         }
@@ -149,7 +147,6 @@ export function Orders({ token }: OrdersProps) {
                     order={selectedOrder}
                     onClose={() => setSelectedOrder(null)}
                     onFinish={loadOrders}
-                    token={token}
                 />
             )}
         </div>

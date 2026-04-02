@@ -25,11 +25,21 @@ api.interceptors.request.use(
     }
 );
 
+let signOutCallback: (() => Promise<void>) | null = null;
+
+export function setSignOutCallback(callback: () => Promise<void>) {
+    signOutCallback = callback;
+}
+
 api.interceptors.response.use(
     (response) => response,
     async (error) => {
         if (error.response?.status === 401) {
             await AsyncStorage.removeItem("@token:wasushi");
+            await AsyncStorage.removeItem("@user:wasushi");
+            if (signOutCallback) {
+                await signOutCallback();
+            }
         }
 
         return Promise.reject(error);
