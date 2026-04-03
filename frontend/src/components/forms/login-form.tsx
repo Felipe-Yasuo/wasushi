@@ -21,12 +21,13 @@ export function LoginForm() {
     return (
         <form action={formAction} className="space-y-5">
             <div>
-                <label className="mb-2 block text-xs font-semibold tracking-[0.15em] text-on-surface-variant">
+                <label htmlFor="login-email" className="mb-2 block text-xs font-semibold tracking-[0.15em] text-on-surface-variant">
                     E-MAIL
                 </label>
                 <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-on-surface-variant/50" />
+                    <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-on-surface-variant/50" aria-hidden="true" />
                     <input
+                        id="login-email"
                         type="email"
                         name="email"
                         placeholder="admin@wasushi.com"
@@ -38,13 +39,14 @@ export function LoginForm() {
 
             <div>
                 <div className="mb-2 flex items-center justify-between">
-                    <label className="text-xs font-semibold tracking-[0.15em] text-on-surface-variant">
+                    <label htmlFor="login-password" className="text-xs font-semibold tracking-[0.15em] text-on-surface-variant">
                         SENHA
                     </label>
                 </div>
                 <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-on-surface-variant/50" />
+                    <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-on-surface-variant/50" aria-hidden="true" />
                     <input
+                        id="login-password"
                         type={showPassword ? "text" : "password"}
                         name="password"
                         placeholder="••••••••"
@@ -54,9 +56,10 @@ export function LoginForm() {
                     <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
+                        aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
                         className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 hover:text-on-surface-variant"
                     >
-                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        {showPassword ? <EyeOff className="h-4 w-4" aria-hidden="true" /> : <Eye className="h-4 w-4" aria-hidden="true" />}
                     </button>
                 </div>
             </div>

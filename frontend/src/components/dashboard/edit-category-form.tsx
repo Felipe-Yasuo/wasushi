@@ -60,8 +60,8 @@ export function EditCategoryForm({ category }: EditCategoryFormProps) {
     return (
         <Dialog open={open} onOpenChange={handleOpenChange}>
             <DialogTrigger asChild>
-                <button className="rounded-lg p-2 text-on-surface-variant transition-colors hover:bg-surface-high hover:text-on-surface">
-                    <Pencil className="h-4 w-4" />
+                <button aria-label="Editar categoria" className="rounded-lg p-2 text-on-surface-variant transition-colors hover:bg-surface-high hover:text-on-surface">
+                    <Pencil className="h-4 w-4" aria-hidden="true" />
                 </button>
             </DialogTrigger>
             <DialogContent className="border-outline-variant/10 bg-surface-container sm:max-w-md">
@@ -76,10 +76,11 @@ export function EditCategoryForm({ category }: EditCategoryFormProps) {
 
                 <form onSubmit={handleSubmit} className="space-y-5 pt-2">
                     <div>
-                        <label className="mb-2 block text-xs font-semibold tracking-[0.15em] text-on-surface-variant">
+                        <label htmlFor="edit-category-name" className="mb-2 block text-xs font-semibold tracking-[0.15em] text-on-surface-variant">
                             NOME DA CATEGORIA
                         </label>
                         <input
+                            id="edit-category-name"
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
@@ -96,6 +97,7 @@ export function EditCategoryForm({ category }: EditCategoryFormProps) {
                             <button
                                 type="button"
                                 onClick={() => setDisabled(false)}
+                                aria-pressed={!disabled}
                                 className={`flex-1 rounded-lg py-3 text-sm font-semibold tracking-wider transition-all ${!disabled
                                         ? "bg-tertiary/20 text-tertiary ring-2 ring-tertiary/50"
                                         : "bg-surface-highest/60 text-on-surface-variant hover:bg-surface-highest"
@@ -106,6 +108,7 @@ export function EditCategoryForm({ category }: EditCategoryFormProps) {
                             <button
                                 type="button"
                                 onClick={() => setDisabled(true)}
+                                aria-pressed={disabled}
                                 className={`flex-1 rounded-lg py-3 text-sm font-semibold tracking-wider transition-all ${disabled
                                         ? "bg-brand-container/20 text-brand-primary ring-2 ring-brand-container/50"
                                         : "bg-surface-highest/60 text-on-surface-variant hover:bg-surface-highest"

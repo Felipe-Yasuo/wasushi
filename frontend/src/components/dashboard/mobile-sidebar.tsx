@@ -22,8 +22,8 @@ export function MobileSidebar() {
 
             <Sheet open={open} onOpenChange={setOpen}>
                 <SheetTrigger asChild>
-                    <button className="rounded-lg p-2 text-on-surface-variant hover:bg-surface-high">
-                        <Menu className="h-5 w-5" />
+                    <button aria-label="Abrir menu" className="rounded-lg p-2 text-on-surface-variant hover:bg-surface-high">
+                        <Menu className="h-5 w-5" aria-hidden="true" />
                     </button>
                 </SheetTrigger>
                 <SheetContent side="left" className="w-64 border-0 bg-surface p-6">

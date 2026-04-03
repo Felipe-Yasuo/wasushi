@@ -58,10 +58,11 @@ export function CategoryForm() {
 
                 <form ref={formRef} action={handleSubmit} className="space-y-5 pt-2">
                     <div>
-                        <label className="mb-2 block text-xs font-semibold tracking-[0.15em] text-on-surface-variant">
+                        <label htmlFor="category-name" className="mb-2 block text-xs font-semibold tracking-[0.15em] text-on-surface-variant">
                             NOME DA CATEGORIA
                         </label>
                         <input
+                            id="category-name"
                             type="text"
                             name="name"
                             placeholder="Ex: Sushi, Temaki, Bebidas..."

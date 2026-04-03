@@ -35,9 +35,10 @@ export function DeleteCategoryButton({ categoryId }: DeleteCategoryButtonProps) 
         <>
             <button
                 onClick={() => setShowConfirm(true)}
+                aria-label="Deletar categoria"
                 className="rounded-lg p-2 text-on-surface-variant transition-colors hover:bg-brand-container/15 hover:text-brand-primary"
             >
-                <Trash2 className="h-4 w-4" />
+                <Trash2 className="h-4 w-4" aria-hidden="true" />
             </button>
 
             {showConfirm && (

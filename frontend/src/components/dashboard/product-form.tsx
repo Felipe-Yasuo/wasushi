@@ -66,10 +66,11 @@ export function ProductForm({ categories }: ProductFormProps) {
 
                 <form ref={formRef} action={handleSubmit} className="space-y-5 pt-2">
                     <div>
-                        <label className="mb-2 block text-xs font-semibold tracking-[0.15em] text-on-surface-variant">
+                        <label htmlFor="product-name" className="mb-2 block text-xs font-semibold tracking-[0.15em] text-on-surface-variant">
                             NOME DO PRATO
                         </label>
                         <input
+                            id="product-name"
                             type="text"
                             name="name"
                             placeholder="Ex: Temaki de Salmão"
@@ -80,16 +81,17 @@ export function ProductForm({ categories }: ProductFormProps) {
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="mb-2 block text-xs font-semibold tracking-[0.15em] text-on-surface-variant">
+                            <label htmlFor="product-price" className="mb-2 block text-xs font-semibold tracking-[0.15em] text-on-surface-variant">
                                 PREÇO (R$)
                             </label>
-                            <PriceInput name="price" />
+                            <PriceInput id="product-price" name="price" />
                         </div>
                         <div>
-                            <label className="mb-2 block text-xs font-semibold tracking-[0.15em] text-on-surface-variant">
+                            <label htmlFor="product-category" className="mb-2 block text-xs font-semibold tracking-[0.15em] text-on-surface-variant">
                                 CATEGORIA
                             </label>
                             <select
+                                id="product-category"
                                 name="category_id"
                                 required
                                 className="w-full rounded-lg bg-surface-highest/60 py-3 px-4 text-on-surface focus:outline-none focus:ring-2 focus:ring-brand-primary/30"
@@ -105,10 +107,11 @@ export function ProductForm({ categories }: ProductFormProps) {
                     </div>
 
                     <div>
-                        <label className="mb-2 block text-xs font-semibold tracking-[0.15em] text-on-surface-variant">
+                        <label htmlFor="product-description" className="mb-2 block text-xs font-semibold tracking-[0.15em] text-on-surface-variant">
                             DESCRIÇÃO
                         </label>
                         <textarea
+                            id="product-description"
                             name="description"
                             placeholder="Descreva os ingredientes e preparo..."
                             required

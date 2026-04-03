@@ -65,8 +65,8 @@ export function EditProductForm({ product, categories }: EditProductFormProps) {
             }
         }}>
             <DialogTrigger asChild>
-                <button className="rounded-lg p-2 text-on-surface-variant transition-colors hover:bg-surface-high hover:text-on-surface">
-                    <Pencil className="h-4 w-4" />
+                <button aria-label="Editar produto" className="rounded-lg p-2 text-on-surface-variant transition-colors hover:bg-surface-high hover:text-on-surface">
+                    <Pencil className="h-4 w-4" aria-hidden="true" />
                 </button>
             </DialogTrigger>
             <DialogContent className="max-h-[90vh] overflow-y-auto border-outline-variant/10 bg-surface-container sm:max-w-lg">
@@ -81,10 +81,11 @@ export function EditProductForm({ product, categories }: EditProductFormProps) {
 
                 <form ref={formRef} action={handleSubmit} className="space-y-5 pt-2">
                     <div>
-                        <label className="mb-2 block text-xs font-semibold tracking-[0.15em] text-on-surface-variant">
+                        <label htmlFor="edit-product-name" className="mb-2 block text-xs font-semibold tracking-[0.15em] text-on-surface-variant">
                             NOME DO PRATO
                         </label>
                         <input
+                            id="edit-product-name"
                             type="text"
                             name="name"
                             defaultValue={product.name}
@@ -95,16 +96,17 @@ export function EditProductForm({ product, categories }: EditProductFormProps) {
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="mb-2 block text-xs font-semibold tracking-[0.15em] text-on-surface-variant">
+                            <label htmlFor="edit-product-price" className="mb-2 block text-xs font-semibold tracking-[0.15em] text-on-surface-variant">
                                 PREÇO (R$)
                             </label>
-                            <PriceInput name="price" initialValue={product.price} />
+                            <PriceInput id="edit-product-price" name="price" initialValue={product.price} />
                         </div>
                         <div>
-                            <label className="mb-2 block text-xs font-semibold tracking-[0.15em] text-on-surface-variant">
+                            <label htmlFor="edit-product-category" className="mb-2 block text-xs font-semibold tracking-[0.15em] text-on-surface-variant">
                                 CATEGORIA
                             </label>
                             <select
+                                id="edit-product-category"
                                 name="category_id"
                                 defaultValue={product.category_id}
                                 required
@@ -121,10 +123,11 @@ export function EditProductForm({ product, categories }: EditProductFormProps) {
                     </div>
 
                     <div>
-                        <label className="mb-2 block text-xs font-semibold tracking-[0.15em] text-on-surface-variant">
+                        <label htmlFor="edit-product-description" className="mb-2 block text-xs font-semibold tracking-[0.15em] text-on-surface-variant">
                             DESCRIÇÃO
                         </label>
                         <textarea
+                            id="edit-product-description"
                             name="description"
                             defaultValue={product.description}
                             required
@@ -175,6 +178,7 @@ export function EditProductForm({ product, categories }: EditProductFormProps) {
                             <button
                                 type="button"
                                 onClick={() => setDisabled(false)}
+                                aria-pressed={!disabled}
                                 className={`flex-1 rounded-lg py-3 text-sm font-semibold tracking-wider transition-all ${!disabled
                                         ? "bg-tertiary/20 text-tertiary ring-2 ring-tertiary/50"
                                         : "bg-surface-highest/60 text-on-surface-variant hover:bg-surface-highest"
@@ -185,6 +189,7 @@ export function EditProductForm({ product, categories }: EditProductFormProps) {
                             <button
                                 type="button"
                                 onClick={() => setDisabled(true)}
+                                aria-pressed={disabled}
                                 className={`flex-1 rounded-lg py-3 text-sm font-semibold tracking-wider transition-all ${disabled
                                         ? "bg-brand-container/20 text-brand-primary ring-2 ring-brand-container/50"
                                         : "bg-surface-highest/60 text-on-surface-variant hover:bg-surface-highest"

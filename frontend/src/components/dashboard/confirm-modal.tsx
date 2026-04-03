@@ -20,19 +20,26 @@ export function ConfirmModal({
     loading = false,
 }: ConfirmModalProps) {
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+        <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="confirm-modal-title"
+            aria-describedby="confirm-modal-description"
+        >
             <div className="w-full max-w-sm rounded-xl bg-surface-container p-6">
                 <div className="mb-4 flex items-center justify-between">
-                    <h2 className="text-lg font-bold text-on-surface">{title}</h2>
+                    <h2 id="confirm-modal-title" className="text-lg font-bold text-on-surface">{title}</h2>
                     <button
                         onClick={onCancel}
+                        aria-label="Fechar"
                         className="rounded-lg p-1 text-on-surface-variant hover:text-on-surface"
                     >
-                        <X className="h-5 w-5" />
+                        <X className="h-5 w-5" aria-hidden="true" />
                     </button>
                 </div>
 
-                <p className="mb-6 text-sm text-on-surface-variant">{message}</p>
+                <p id="confirm-modal-description" className="mb-6 text-sm text-on-surface-variant">{message}</p>
 
                 <div className="flex gap-3">
                     <button

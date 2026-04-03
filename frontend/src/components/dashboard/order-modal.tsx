@@ -41,25 +41,32 @@ export function OrderModal({ order, onClose, onFinish }: OrderModalProps) {
     }
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+        <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="order-modal-title"
+            aria-describedby="order-modal-description"
+        >
             <div className="w-full max-w-lg rounded-xl bg-surface-container p-6">
                 <div className="mb-4 flex items-start justify-between">
                     <div>
                         <span className="mb-2 inline-block rounded-full bg-brand-container/15 px-3 py-1 text-xs font-semibold text-brand-primary">
                             MESA {String(order.table).padStart(2, "0")}
                         </span>
-                        <h2 className="text-xl font-bold text-on-surface">
+                        <h2 id="order-modal-title" className="text-xl font-bold text-on-surface">
                             Detalhes do Pedido
                         </h2>
-                        <p className="text-sm text-on-surface-variant">
+                        <p id="order-modal-description" className="text-sm text-on-surface-variant">
                             Cliente: {order.name || "Sem nome"} • {formatTime(order.createdAt)}
                         </p>
                     </div>
                     <button
                         onClick={onClose}
+                        aria-label="Fechar"
                         className="rounded-lg p-1 text-on-surface-variant hover:text-on-surface"
                     >
-                        <X className="h-5 w-5" />
+                        <X className="h-5 w-5" aria-hidden="true" />
                     </button>
                 </div>
 

@@ -3,11 +3,12 @@
 import { useState } from "react";
 
 interface PriceInputProps {
+    id?: string;
     name: string;
     initialValue?: number;
 }
 
-export function PriceInput({ name, initialValue = 0 }: PriceInputProps) {
+export function PriceInput({ id, name, initialValue = 0 }: PriceInputProps) {
     const [valueInCents, setValueInCents] = useState(initialValue);
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -24,6 +25,7 @@ export function PriceInput({ name, initialValue = 0 }: PriceInputProps) {
     return (
         <>
             <input
+                id={id}
                 type="text"
                 inputMode="numeric"
                 value={display}
