@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Category, Product } from "@/lib/types";
 import { Pencil, Upload } from "lucide-react";
+import Image from "next/image";
 import { useRef, useState } from "react";
 import { PriceInput } from "./price-input";
 
@@ -137,9 +138,11 @@ export function EditProductForm({ product, categories }: EditProductFormProps) {
                             IMAGEM DO PRODUTO (opcional)
                         </label>
                         <div className="mb-2 flex items-center gap-3">
-                            <img
+                            <Image
                                 src={product.banner}
                                 alt={product.name}
+                                width={80}
+                                height={64}
                                 className="h-16 w-20 rounded-lg object-cover"
                             />
                             <p className="text-xs text-on-surface-variant">Imagem atual</p>

@@ -15,6 +15,7 @@ class CreateUserService {
             where: {
                 email: email,
             },
+            select: { id: true },
         });
 
         if (userAlreadyExists) {

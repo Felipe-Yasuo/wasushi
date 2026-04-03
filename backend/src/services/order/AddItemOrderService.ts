@@ -14,6 +14,7 @@ class AddItemOrderService {
             where: {
                 id: order_id,
             },
+            select: { id: true },
         });
 
         if (!orderExists) {
@@ -24,6 +25,7 @@ class AddItemOrderService {
             where: {
                 id: product_id,
             },
+            select: { id: true },
         });
 
         if (!productExists) {

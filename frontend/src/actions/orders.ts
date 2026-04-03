@@ -2,7 +2,7 @@
 
 import { apiClient } from "@/lib/api";
 import { getToken, removeToken } from "@/lib/auth";
-import { Order } from "@/lib/types";
+import { Order, PaginatedResponse } from "@/lib/types";
 import { revalidatePath } from "next/cache";
 
 export async function listOrdersAction() {
@@ -13,9 +13,9 @@ export async function listOrdersAction() {
             return { success: false, error: "Não autorizado", data: [] as Order[] };
         }
 
-        const data = await apiClient<Order[]>("/orders", { token });
+        const response = await apiClient<PaginatedResponse<Order>>("/orders", { token });
 
-        return { success: true, error: "", data };
+        return { success: true, error: "", data: response.data };
     } catch (error) {
         if (error instanceof Error) {
             if ((error as any).status === 401) {

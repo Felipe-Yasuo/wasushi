@@ -17,6 +17,7 @@ class UpdateProductService {
 
         const product = await prismaClient.product.findFirst({
             where: { id: product_id },
+            select: { id: true, name: true, price: true, description: true, banner: true, category_id: true },
         });
 
         if (!product) {

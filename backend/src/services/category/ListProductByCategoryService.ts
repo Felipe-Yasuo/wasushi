@@ -12,6 +12,7 @@ class ListProductByCategoryService {
             where: {
                 id: category_id,
             },
+            select: { id: true },
         });
 
         if (!category) {

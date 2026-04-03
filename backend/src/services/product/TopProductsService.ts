@@ -16,20 +16,20 @@ class TopProductsService {
             take: 5,
         });
 
-        const productsWithDetails = await Promise.all(
-            topProducts.map(async (item) => {
-                const product = await prismaClient.product.findFirst({
-                    where: { id: item.product_id },
-                    select: { id: true, name: true },
-                });
+        const productIds = topProducts.map((item) => item.product_id);
 
-                return {
-                    id: item.product_id,
-                    name: product?.name || "Produto removido",
-                    totalSold: item._sum.amount || 0,
-                };
-            })
-        );
+        const products = await prismaClient.product.findMany({
+            where: { id: { in: productIds } },
+            select: { id: true, name: true },
+        });
+
+        const productMap = new Map(products.map((p) => [p.id, p.name]));
+
+        const productsWithDetails = topProducts.map((item) => ({
+            id: item.product_id,
+            name: productMap.get(item.product_id) || "Produto removido",
+            totalSold: item._sum.amount || 0,
+        }));
 
         return productsWithDetails;
     }

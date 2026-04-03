@@ -12,6 +12,7 @@ class CreateCategoryService {
             where: {
                 name: name,
             },
+            select: { id: true },
         });
 
         if (categoryAlreadyExists) {

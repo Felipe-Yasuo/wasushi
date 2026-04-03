@@ -17,6 +17,7 @@ class CreateProductService {
             where: {
                 id: category_id,
             },
+            select: { id: true },
         });
 
         if (!categoryExists) {

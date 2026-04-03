@@ -15,7 +15,8 @@ export const isAdmin = async (request: Request, response: Response, next: NextFu
     const user = await prismaClient.user.findFirst({
         where: {
             id: user_id
-        }
+        },
+        select: { id: true, role: true },
     })
 
     if (!user) {

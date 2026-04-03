@@ -12,6 +12,7 @@ class RemoveItemOrderService {
             where: {
                 id: item_id,
             },
+            select: { id: true },
         });
 
         if (!itemExists) {

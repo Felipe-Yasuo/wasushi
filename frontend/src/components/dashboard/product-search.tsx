@@ -3,6 +3,7 @@
 import { Category, Product } from "@/lib/types";
 import { formatPrice } from "@/lib/format";
 import { Search } from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
 import { EditProductForm } from "./edit-product-form";
 import { DeleteButton } from "./delete-button";
@@ -69,9 +70,11 @@ export function ProductSearch({ products, categories }: ProductSearchProps) {
                                 className="border-b border-outline-variant/5 transition-colors hover:bg-surface-high/30"
                             >
                                 <td className="px-5 py-4">
-                                    <img
+                                    <Image
                                         src={product.banner}
                                         alt={product.name}
+                                        width={64}
+                                        height={48}
                                         className="h-12 w-16 rounded-lg object-cover"
                                     />
                                 </td>

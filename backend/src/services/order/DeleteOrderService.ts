@@ -12,6 +12,7 @@ class DeleteOrderService {
             where: {
                 id: order_id,
             },
+            select: { id: true },
         });
 
         if (!order) {

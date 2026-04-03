@@ -10,6 +10,7 @@ class DeleteCategoryService {
 
         const category = await prismaClient.category.findFirst({
             where: { id: category_id },
+            select: { id: true },
         });
 
         if (!category) {

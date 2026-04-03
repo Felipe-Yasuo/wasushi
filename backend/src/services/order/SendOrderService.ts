@@ -13,6 +13,7 @@ class SendOrderService {
             where: {
                 id: order_id,
             },
+            select: { id: true, draft: true },
         });
 
         if (!order) {

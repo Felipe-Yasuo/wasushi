@@ -14,7 +14,8 @@
       "Bash(echo \"No .env files in backend\" echo \"\" echo \"=== Check frontend .env files ===\" ls -la frontend/.env*)",
       "Bash(find /c/Users/Yasuo/Desktop/portfolio/wasushi/frontend/src -type f \\\\\\( -name \"*.tsx\" -o -name \"*.ts\" \\\\\\) -exec grep -l \"apiClient\\\\|'server'\\\\|use.*Action\" {} \\\\;)",
       "Bash(find /c/Users/Yasuo/Desktop/portfolio/wasushi/frontend/src -type f \\\\\\( -name \"*.tsx\" -o -name \"*.ts\" \\\\\\) -exec grep -l \"error\\\\|Error\\\\|ErrorBoundary\\\\|error\\\\.tsx\" {} \\\\;)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(grep -n \"onClick\\\\|onChange\" /c/Users/Yasuo/Desktop/portfolio/wasushi/frontend/src/components/dashboard/*.tsx)"
     ]
   }
 }

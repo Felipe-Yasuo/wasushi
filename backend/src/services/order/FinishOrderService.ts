@@ -12,6 +12,7 @@ class FinishOrderService {
             where: {
                 id: order_id,
             },
+            select: { id: true, status: true },
         });
 
         if (!order) {

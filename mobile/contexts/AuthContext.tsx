@@ -23,12 +23,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const [user, setUser] = useState<User | null>(null);
 
     useEffect(() => {
+        let cancelled = false;
+
         async function loadData() {
             await loadStorageData();
         }
 
         loadData();
         setSignOutCallback(signOut);
+
+        return () => {
+            cancelled = true;
+            setSignOutCallback(null);
+        };
     }, []);
 
     async function loadStorageData() {

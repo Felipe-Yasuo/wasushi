@@ -27,7 +27,7 @@ api.interceptors.request.use(
 
 let signOutCallback: (() => Promise<void>) | null = null;
 
-export function setSignOutCallback(callback: () => Promise<void>) {
+export function setSignOutCallback(callback: (() => Promise<void>) | null) {
     signOutCallback = callback;
 }
 

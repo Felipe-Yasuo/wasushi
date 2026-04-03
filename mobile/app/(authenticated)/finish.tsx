@@ -1,7 +1,7 @@
 import { colors, fontSize, spacing } from "@/constants/theme";
 import api from "@/services/api";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
     Alert,
     KeyboardAvoidingView,
@@ -23,6 +23,11 @@ export default function Finish() {
 
     const [customer, setCustomer] = useState("");
     const [loading, setLoading] = useState(false);
+    const mountedRef = useRef(true);
+
+    useEffect(() => {
+        return () => { mountedRef.current = false; };
+    }, []);
 
     async function handleFinishOrder() {
         try {
@@ -33,14 +38,16 @@ export default function Finish() {
                 name: customer || "Sem nome",
             });
 
+            if (!mountedRef.current) return;
+
             Alert.alert("Sucesso", "Pedido enviado para a cozinha!");
 
             router.dismissAll();
             router.replace("/(authenticated)/dashboard");
         } catch (err: any) {
-            Alert.alert("Erro", err?.response?.data?.error || "Falha ao enviar pedido.");
+            if (mountedRef.current) Alert.alert("Erro", err?.response?.data?.error || "Falha ao enviar pedido.");
         } finally {
-            setLoading(false);
+            if (mountedRef.current) setLoading(false);
         }
     }
 

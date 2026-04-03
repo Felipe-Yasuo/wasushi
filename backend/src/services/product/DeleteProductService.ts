@@ -12,6 +12,7 @@ class DeleteProductService {
             where: {
                 id: product_id,
             },
+            select: { id: true },
         });
 
         if (!product) {

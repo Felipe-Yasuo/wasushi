@@ -42,42 +42,49 @@ export default function Order() {
     const [items, setItems] = useState<Item[]>([]);
 
     useEffect(() => {
+        let cancelled = false;
+
+        async function loadCategories() {
+            try {
+                const response = await api.get<Category[]>("/category");
+                if (!cancelled) setCategories(response.data);
+            } catch (err: any) {
+                if (!cancelled) Alert.alert("Erro", err?.response?.data?.error || "Falha ao carregar categorias.");
+            } finally {
+                if (!cancelled) setLoadingCategories(false);
+            }
+        }
+
         loadCategories();
+        return () => { cancelled = true; };
     }, []);
 
     useEffect(() => {
-        if (selectedCategory) {
-            loadProducts(selectedCategory);
-        } else {
+        if (!selectedCategory) {
             setProducts([]);
             setSelectedProduct("");
+            return;
         }
+
+        let cancelled = false;
+
+        async function loadProducts() {
+            try {
+                setLoadingProducts(true);
+                const response = await api.get<Product[]>("/category/product", {
+                    params: { category_id: selectedCategory },
+                });
+                if (!cancelled) setProducts(response.data);
+            } catch (err: any) {
+                if (!cancelled) Alert.alert("Erro", err?.response?.data?.error || "Falha ao carregar produtos.");
+            } finally {
+                if (!cancelled) setLoadingProducts(false);
+            }
+        }
+
+        loadProducts();
+        return () => { cancelled = true; };
     }, [selectedCategory]);
-
-    async function loadCategories() {
-        try {
-            const response = await api.get<Category[]>("/category");
-            setCategories(response.data);
-        } catch (err: any) {
-            Alert.alert("Erro", err?.response?.data?.error || "Falha ao carregar categorias.");
-        } finally {
-            setLoadingCategories(false);
-        }
-    }
-
-    async function loadProducts(categoryId: string) {
-        try {
-            setLoadingProducts(true);
-            const response = await api.get<Product[]>("/category/product", {
-                params: { category_id: categoryId },
-            });
-            setProducts(response.data);
-        } catch (err: any) {
-            Alert.alert("Erro", err?.response?.data?.error || "Falha ao carregar produtos.");
-        } finally {
-            setLoadingProducts(false);
-        }
-    }
 
     async function handleAddItem() {
         try {

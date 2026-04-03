@@ -43,7 +43,7 @@ export function CategoryForm() {
             <DialogTrigger asChild>
                 <button className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-brand-container to-brand-primary px-5 py-2.5 text-sm font-semibold tracking-wider text-brand-on-container transition-opacity hover:opacity-90">
                     <Plus className="h-4 w-4" />
-                    Novo
+                    Nova Categoria
                 </button>
             </DialogTrigger>
             <DialogContent className="border-outline-variant/10 bg-surface-container sm:max-w-md">

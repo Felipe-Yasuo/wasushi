@@ -1,18 +1,20 @@
 import { ProductForm } from "@/components/dashboard/product-form";
 import { apiClient } from "@/lib/api";
 import { getToken } from "@/lib/auth";
-import { Category, Product, TopProduct } from "@/lib/types";
+import { Category, PaginatedResponse, Product, TopProduct } from "@/lib/types";
 import { UtensilsCrossed } from "lucide-react";
 import { ProductSearch } from "@/components/dashboard/product-search";
 
 export default async function ProductsPage() {
     const token = await getToken();
 
-    const [products, categories, topProducts] = await Promise.all([
-        apiClient<Product[]>("/products", { token: token!, cache: "no-store" }),
+    const [productsResponse, categories, topProducts] = await Promise.all([
+        apiClient<PaginatedResponse<Product>>("/products", { token: token!, cache: "no-store" }),
         apiClient<Category[]>("/category", { token: token!, cache: "no-store" }),
         apiClient<TopProduct[]>("/products/top", { token: token!, cache: "no-store" }).catch(() => [] as TopProduct[]),
     ]);
+
+    const products = productsResponse.data;
 
     return (
         <div>
