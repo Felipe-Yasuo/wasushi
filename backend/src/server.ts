@@ -12,6 +12,11 @@ app.use(cors({
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
 }));
+
+app.get("/health", (_, response) => {
+    response.status(200).json({ status: "ok" });
+});
+
 app.use(router);
 
 app.use((error: Error, _: Request, response: Response, next: NextFunction) => {
@@ -28,8 +33,8 @@ app.use((error: Error, _: Request, response: Response, next: NextFunction) => {
     });
 });
 
-const PORT = process.env.PORT! || 3333;
+const PORT = Number(process.env.PORT) || 3333;
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
     console.log(`Servidor Wasushi rodando na porta ${PORT}`);
 });
