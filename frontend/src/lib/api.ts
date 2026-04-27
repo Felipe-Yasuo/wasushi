@@ -31,23 +31,39 @@ export async function apiClient<T>(
         headers["Content-Type"] = "application/json";
     }
 
-    const response = await fetch(`${API_URL}${endpoint}`, {
-        ...fetchOptions,
-        headers,
-    });
+    let response: Response;
+    try {
+        response = await fetch(`${API_URL}${endpoint}`, {
+            ...fetchOptions,
+            headers,
+        });
+    } catch (err) {
+        const message = err instanceof Error ? err.message : String(err);
+        throw new Error(`Falha ao conectar com o servidor (${API_URL}${endpoint}): ${message}`);
+    }
 
     if (!response.ok) {
-        const error = await response.json().catch(() => ({
-            error: "Erro na requisição",
-        }));
+        const rawText = await response.text().catch(() => "");
+        let parsed: { error?: string } | null = null;
+        try {
+            parsed = rawText ? JSON.parse(rawText) : null;
+        } catch {
+            parsed = null;
+        }
+
+        const fallback = rawText
+            ? `HTTP ${response.status}: ${rawText.slice(0, 200)}`
+            : `HTTP ${response.status} ${response.statusText || "sem corpo"}`;
+
+        const message = parsed?.error || fallback;
 
         if (response.status === 401) {
-            const authError = new Error(error.error || "Sessão expirada");
+            const authError = new Error(parsed?.error || "Sessão expirada");
             (authError as any).status = 401;
             throw authError;
         }
 
-        throw new Error(error.error || "Erro na requisição");
+        throw new Error(message);
     }
 
     return response.json();
