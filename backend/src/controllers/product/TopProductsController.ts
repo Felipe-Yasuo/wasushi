@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { TopProductsService } from "../../services/product/TopProductsService";
 
 class TopProductsController {
-    async handle(request: Request, response: Response) {
+    async handle(_request: Request, response: Response) {
 
         const topProductsService = new TopProductsService();
 

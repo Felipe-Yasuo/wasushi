@@ -9,7 +9,7 @@ export const validateSchema =
                 params: req.params,
                 query: req.query,
             });
-            next();
+            return next();
         } catch (error) {
             if (error instanceof z.ZodError) {
                 return res.status(400).json({

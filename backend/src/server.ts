@@ -19,7 +19,7 @@ app.get("/health", (_, response) => {
 
 app.use(router);
 
-app.use((error: Error, _: Request, response: Response, next: NextFunction) => {
+app.use((error: Error, _request: Request, response: Response, _next: NextFunction) => {
     if (error instanceof AppError) {
         return response.status(error.statusCode).json({
             error: error.message,
