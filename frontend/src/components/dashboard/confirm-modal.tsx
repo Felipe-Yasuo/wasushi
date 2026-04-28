@@ -1,6 +1,6 @@
 "use client";
 
-import { X } from "lucide-react";
+import { Loader2, X } from "lucide-react";
 
 interface ConfirmModalProps {
     title: string;
@@ -51,9 +51,17 @@ export function ConfirmModal({
                     <button
                         onClick={onConfirm}
                         disabled={loading}
-                        className="flex-1 rounded-lg bg-brand-container py-3 text-sm font-bold tracking-wider text-brand-on-container transition-opacity hover:opacity-90 disabled:opacity-50"
+                        aria-busy={loading}
+                        className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-brand-container to-brand-primary px-5 py-2.5 text-sm font-semibold tracking-wider text-brand-on-container transition-opacity hover:opacity-90 disabled:cursor-wait disabled:opacity-70"
                     >
-                        {loading ? "Deletando..." : confirmLabel}
+                        {loading ? (
+                            <>
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                                Deletando...
+                            </>
+                        ) : (
+                            confirmLabel
+                        )}
                     </button>
                 </div>
             </div>

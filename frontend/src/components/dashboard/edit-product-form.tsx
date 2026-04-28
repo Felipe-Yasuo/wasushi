@@ -10,7 +10,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import { Category, Product } from "@/lib/types";
-import { Pencil, Upload } from "lucide-react";
+import { Loader2, Pencil, Upload } from "lucide-react";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { PriceInput } from "./price-input";
@@ -57,6 +57,7 @@ export function EditProductForm({ product, categories }: EditProductFormProps) {
 
     return (
         <Dialog open={open} onOpenChange={(isOpen) => {
+            if (loading) return;
             setOpen(isOpen);
             if (isOpen) {
                 setDisabled(product.disabled);
@@ -206,16 +207,25 @@ export function EditProductForm({ product, categories }: EditProductFormProps) {
                         <button
                             type="button"
                             onClick={() => setOpen(false)}
-                            className="flex-1 rounded-lg border border-outline-variant/20 py-3 text-sm font-semibold tracking-wider text-on-surface-variant transition-colors hover:bg-surface-high"
+                            disabled={loading}
+                            className="flex-1 rounded-lg border border-outline-variant/20 py-3 text-sm font-semibold tracking-wider text-on-surface-variant transition-colors hover:bg-surface-high disabled:cursor-not-allowed disabled:opacity-50"
                         >
                             CANCELAR
                         </button>
                         <button
                             type="submit"
                             disabled={loading}
-                            className="flex-1 rounded-lg bg-gradient-to-r from-brand-container to-brand-primary py-3 text-sm font-bold tracking-wider text-brand-on-container transition-opacity hover:opacity-90 disabled:opacity-50"
+                            aria-busy={loading}
+                            className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-brand-container to-brand-primary py-3 text-sm font-bold tracking-wider text-brand-on-container transition-opacity hover:opacity-90 disabled:cursor-wait disabled:opacity-70"
                         >
-                            {loading ? "SALVANDO..." : "SALVAR"}
+                            {loading ? (
+                                <>
+                                    <Loader2 className="h-4 w-4 animate-spin" />
+                                    SALVANDO...
+                                </>
+                            ) : (
+                                "SALVAR"
+                            )}
                         </button>
                     </div>
                 </form>

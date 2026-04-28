@@ -10,7 +10,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import { Category } from "@/lib/types";
-import { Plus, Upload } from "lucide-react";
+import { Loader2, Plus, Upload } from "lucide-react";
 import { useRef, useState } from "react";
 import { PriceInput } from "./price-input";
 
@@ -47,7 +47,7 @@ export function ProductForm({ categories }: ProductFormProps) {
     }
 
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
+        <Dialog open={open} onOpenChange={(next) => !loading && setOpen(next)}>
             <DialogTrigger asChild>
                 <button className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-brand-container to-brand-primary px-5 py-2.5 text-sm font-semibold tracking-wider text-brand-on-container transition-opacity hover:opacity-90">
                     <Plus className="h-4 w-4" />
@@ -151,16 +151,25 @@ export function ProductForm({ categories }: ProductFormProps) {
                         <button
                             type="button"
                             onClick={() => setOpen(false)}
-                            className="flex-1 rounded-lg border border-outline-variant/20 py-3 text-sm font-semibold tracking-wider text-on-surface-variant transition-colors hover:bg-surface-high"
+                            disabled={loading}
+                            className="flex-1 rounded-lg border border-outline-variant/20 py-3 text-sm font-semibold tracking-wider text-on-surface-variant transition-colors hover:bg-surface-high disabled:cursor-not-allowed disabled:opacity-50"
                         >
                             CANCELAR
                         </button>
                         <button
                             type="submit"
                             disabled={loading}
-                            className="flex-1 rounded-lg bg-gradient-to-r from-brand-container to-brand-primary py-3 text-sm font-bold tracking-wider text-brand-on-container transition-opacity hover:opacity-90 disabled:opacity-50"
+                            aria-busy={loading}
+                            className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-brand-container to-brand-primary py-3 text-sm font-bold tracking-wider text-brand-on-container transition-opacity hover:opacity-90 disabled:cursor-wait disabled:opacity-70"
                         >
-                            {loading ? "CRIANDO..." : "CRIAR PRODUTO"}
+                            {loading ? (
+                                <>
+                                    <Loader2 className="h-4 w-4 animate-spin" />
+                                    CRIANDO...
+                                </>
+                            ) : (
+                                "CRIAR PRODUTO"
+                            )}
                         </button>
                     </div>
                 </form>
