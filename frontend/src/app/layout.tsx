@@ -15,6 +15,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Wasushi — Admin Dashboard",
   description: "Painel administrativo do restaurante Wasushi",
+  icons: {
+    icon: "/sushi.png",
+  },
 };
 
 export default function RootLayout({
